@@ -79,7 +79,7 @@ class WelcomeView extends StatelessWidget {
               ),
             ),
             Positioned(
-                bottom: 100,
+                bottom: 60,
                 child:
                     ElevatedButton(onPressed: state.onContinueClick, child: Text('Let\'s Get Started!', style: TextStyle(color: Colors.white),)))
           ],
