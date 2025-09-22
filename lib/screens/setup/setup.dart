@@ -13,8 +13,9 @@ class Setup extends StatefulWidget {
 class SetupState extends State<Setup> {
   late int weightInt;
   late int weightFraction;
-  late int heightIndex;
+  late int height;
   late String activityLevel;
+  late int age;
 
   final pageController = PageController(initialPage: 0, viewportFraction: 1);
 

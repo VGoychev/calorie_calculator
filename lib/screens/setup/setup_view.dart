@@ -1,7 +1,9 @@
 import 'package:calorie_calculator/screens/setup/activity_level_selector/activity_level_selector.dart';
+import 'package:calorie_calculator/screens/setup/age_selector/age_selector.dart';
+import 'package:calorie_calculator/screens/setup/height_selector/height_selector.dart';
 import 'package:calorie_calculator/screens/setup/setup.dart';
+import 'package:calorie_calculator/screens/setup/weight_selector/weight_selector.dart';
 import 'package:flutter/material.dart';
-import 'package:wheel_picker/wheel_picker.dart';
 
 class SetupView extends StatelessWidget {
   final SetupState state;
@@ -10,8 +12,6 @@ class SetupView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const textStyle = TextStyle(fontSize: 32.0, height: 1.5);
-
     return Scaffold(
       body: PageView(
         controller: state.pageController,
@@ -35,40 +35,8 @@ class SetupView extends StatelessWidget {
                     SizedBox(
                       height: 20,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          height: 200,
-                          width: 150,
-                          child: WheelPicker(
-                            builder: (context, index) =>
-                                Text("$index", style: textStyle),
-                            selectedIndexColor:
-                                Theme.of(context).colorScheme.onSecondary,
-                            onIndexChanged: (index, interactionType) =>
-                                state.heightIndex = index,
-                            itemCount: 273,
-                            initialIndex: 170,
-                            looping: false,
-                            style: WheelPickerStyle(
-                              itemExtent:
-                                  textStyle.fontSize! * textStyle.height!,
-                              squeeze: 1.25,
-                              diameterRatio: .8,
-                              surroundingOpacity: .25,
-                              magnification: 1.2,
-                            ),
-                          ),
-                        ),
-                        Text(
-                          'cm',
-                          style: TextStyle(
-                              fontSize: 18,
-                              color: Theme.of(context).colorScheme.onSecondary),
-                        )
-                      ],
-                    ),
+                    HeightSelector(
+                        onSelected: (height) => state.height = height)
                   ],
                 ),
                 Positioned(
@@ -103,70 +71,10 @@ class SetupView extends StatelessWidget {
                     SizedBox(
                       height: 20,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        // Integer part picker
-                        SizedBox(
-                          height: 200,
-                          width: 100,
-                          child: WheelPicker(
-                            builder: (context, index) =>
-                                Text("${index}", style: textStyle),
-                            itemCount: 380,
-                            initialIndex: 75,
-                            looping: false,
-                            selectedIndexColor:
-                                Theme.of(context).colorScheme.onSecondary,
-                            onIndexChanged: (index, _) {
-                              state.weightInt = index;
-                            },
-                            style: WheelPickerStyle(
-                              itemExtent:
-                                  textStyle.fontSize! * textStyle.height!,
-                              squeeze: 1.25,
-                              diameterRatio: .8,
-                              surroundingOpacity: .25,
-                              magnification: 1.2,
-                            ),
-                          ),
-                        ),
-                        Text(".",
-                            style: TextStyle(
-                                fontSize: 32,
-                                color:
-                                    Theme.of(context).colorScheme.onSecondary)),
-                        // Fractional part picker
-                        SizedBox(
-                          height: 200,
-                          width: 100,
-                          child: WheelPicker(
-                            builder: (context, index) =>
-                                Text("$index", style: textStyle),
-                            itemCount: 10,
-                            looping: false,
-                            selectedIndexColor:
-                                Theme.of(context).colorScheme.onSecondary,
-                            onIndexChanged: (index, _) {
-                              state.weightFraction = index;
-                            },
-                            style: WheelPickerStyle(
-                              itemExtent:
-                                  textStyle.fontSize! * textStyle.height!,
-                              squeeze: 1.25,
-                              diameterRatio: .8,
-                              surroundingOpacity: .25,
-                              magnification: 1.2,
-                            ),
-                          ),
-                        ),
-                        Text("kg",
-                            style: TextStyle(
-                                fontSize: 18,
-                                color:
-                                    Theme.of(context).colorScheme.onSecondary)),
-                      ],
-                    ),
+                    WeightSelector(
+                        onSelectedWeight: (weight) => state.weightInt = weight,
+                        onSelectedFraction: (fraction) =>
+                            state.weightFraction = fraction)
                   ],
                 ),
                 Positioned(
@@ -201,34 +109,7 @@ class SetupView extends StatelessWidget {
                     SizedBox(
                       height: 20,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          height: 200,
-                          width: 150,
-                          child: WheelPicker(
-                            builder: (context, index) =>
-                                Text("$index", style: textStyle),
-                            itemCount: 113,
-                            initialIndex: 18,
-                            looping: false,
-                            selectedIndexColor:
-                                Theme.of(context).colorScheme.onSecondary,
-                            onIndexChanged: (index, interactionType) =>
-                                state.heightIndex = index,
-                            style: WheelPickerStyle(
-                              itemExtent:
-                                  textStyle.fontSize! * textStyle.height!,
-                              squeeze: 1.25,
-                              diameterRatio: .8,
-                              surroundingOpacity: .25,
-                              magnification: 1.2,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                    AgeSelector(onSelected: (age) => state.age = age)
                   ],
                 ),
                 Positioned(
@@ -261,9 +142,8 @@ class SetupView extends StatelessWidget {
                   SizedBox(
                     height: 20,
                   ),
-                  ActivityLevelSelector(onSelected: (level) {
-                    state.activityLevel = level;
-                  }),
+                  ActivityLevelSelector(
+                      onSelected: (level) => state.activityLevel = level),
                 ]),
                 Positioned(
                   bottom: 60,
