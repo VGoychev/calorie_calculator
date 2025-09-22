@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="app_name">Calorie Calculator</string>
+    <string name="facebook_app_id">1201299785345545</string>
+    <string name="fb_login_protocol_scheme">fb1201299785345545</string>
+    <string name="facebook_client_token">c54fa331b308636c483c1390b7bc5090</string>
+</resources>
