@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ActivityLevelSelector extends StatefulWidget {
-  final Function(String) onSelected; // callback when user selects
+  final Function(String) onSelected;
 
   const ActivityLevelSelector({super.key, required this.onSelected});
 
@@ -41,14 +41,14 @@ class _ActivityLevelSelectorState extends State<ActivityLevelSelector> {
       children: activityLevels.map((level) {
         final isSelected = level["title"] == selectedLevel;
         return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 6),
+          padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 16),
           child: InkWell(
             borderRadius: BorderRadius.circular(12),
             onTap: () {
               setState(() {
                 selectedLevel = level["title"]!;
               });
-              widget.onSelected(level["title"]!); // notify parent
+              widget.onSelected(level["title"]!);
             },
             child: Card(
               elevation: isSelected ? 4 : 1,

@@ -1,4 +1,3 @@
-import 'package:calorie_calculator/data/models/user.dart';
 import 'package:calorie_calculator/firebase_options.dart';
 import 'package:calorie_calculator/screens/login/login.dart';
 import 'package:calorie_calculator/services/shared_prefs_service.dart';
@@ -6,16 +5,12 @@ import 'package:calorie_calculator/theme/app_theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:rive/rive.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final appDocumentDir = await path_provider.getApplicationDocumentsDirectory();
   await RiveFile.initialize();
-  await Hive.initFlutter(appDocumentDir.path);
-  Hive.registerAdapter(UserAdapter());
+
   
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,

@@ -3,6 +3,7 @@ import 'package:calorie_calculator/screens/setup/age_selector/age_selector.dart'
 import 'package:calorie_calculator/screens/setup/height_selector/height_selector.dart';
 import 'package:calorie_calculator/screens/setup/setup.dart';
 import 'package:calorie_calculator/screens/setup/weight_selector/weight_selector.dart';
+import 'package:calorie_calculator/widgets/back_only_pageview.dart';
 import 'package:flutter/material.dart';
 
 class SetupView extends StatelessWidget {
@@ -13,7 +14,7 @@ class SetupView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: PageView(
+      body: BackOnlyPageView(
         controller: state.pageController,
         children: [
           Container(
@@ -42,7 +43,11 @@ class SetupView extends StatelessWidget {
                 Positioned(
                   bottom: 60,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      state.pageController.nextPage(
+                          duration: const Duration(milliseconds: 300),
+                          curve: Curves.easeInOut);
+                    },
                     child: Text(
                       'Next',
                       style: TextStyle(color: Colors.white),
@@ -74,13 +79,17 @@ class SetupView extends StatelessWidget {
                     WeightSelector(
                         onSelectedWeight: (weight) => state.weightInt = weight,
                         onSelectedFraction: (fraction) =>
-                            state.weightFraction = fraction)
+                            state.weightFraction = fraction),
                   ],
                 ),
                 Positioned(
                   bottom: 60,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      state.pageController.nextPage(
+                          duration: const Duration(milliseconds: 300),
+                          curve: Curves.easeInOut);
+                    },
                     child: Text(
                       'Next',
                       style: TextStyle(color: Colors.white),
@@ -115,7 +124,11 @@ class SetupView extends StatelessWidget {
                 Positioned(
                   bottom: 60,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      state.pageController.nextPage(
+                          duration: const Duration(milliseconds: 300),
+                          curve: Curves.easeInOut);
+                    },
                     child: Text(
                       'Next',
                       style: TextStyle(color: Colors.white),
@@ -148,7 +161,11 @@ class SetupView extends StatelessWidget {
                 Positioned(
                   bottom: 60,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      state.pageController.nextPage(
+                          duration: const Duration(milliseconds: 300),
+                          curve: Curves.easeInOut);
+                    },
                     child: Text(
                       'Next',
                       style: TextStyle(color: Colors.white),
