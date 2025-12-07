@@ -93,7 +93,10 @@ class RegisterView extends StatelessWidget {
                       const SizedBox(height: 20),
                       ElevatedButton(
                           onPressed: state.register,
-                          child: const Text('Register')),
+                          child: Text(
+                            'Register',
+                            style: Theme.of(context).textTheme.bodyLarge,
+                          )),
                       const SizedBox(height: 20),
                     ],
                   ),

@@ -81,7 +81,7 @@ class OnboardingView extends StatelessWidget {
               bottom: 60,
               child: ElevatedButton(
                 onPressed: state.onContinueClick,
-                child: Text(
+                child: const Text(
                   'Continue',
                   style: TextStyle(color: Colors.white),
                 ),

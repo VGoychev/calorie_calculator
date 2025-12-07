@@ -12,12 +12,12 @@ class BackOnlyPageView extends StatefulWidget {
   final Curve pageAnimationCurve;
 
   const BackOnlyPageView({
-    Key? key,
+    super.key,
     required this.controller,
     required this.children,
     this.pageAnimationDuration = const Duration(milliseconds: 300),
     this.pageAnimationCurve = Curves.decelerate,
-  }) : super(key: key);
+  });
 
   @override
   _BackOnlyPageViewState createState() => _BackOnlyPageViewState();

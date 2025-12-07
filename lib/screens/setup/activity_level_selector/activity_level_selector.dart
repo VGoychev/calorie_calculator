@@ -54,7 +54,7 @@ class _ActivityLevelSelectorState extends State<ActivityLevelSelector> {
               elevation: isSelected ? 4 : 1,
               margin: EdgeInsets.fromLTRB(12, 0, 12, 0),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(25),
                 side: BorderSide(
                   color: isSelected
                       ? Theme.of(context).colorScheme.primary

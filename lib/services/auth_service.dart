@@ -1,3 +1,5 @@
+import 'dart:developer' as developer;
+
 import 'package:calorie_calculator/services/firestore_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -40,7 +42,7 @@ class AuthService {
       }
       return user;
     } catch (e) {
-      print('Google sign-in failed: $e');
+      developer.log('Google sign-in failed: $e');
       return null;
     }
   }
@@ -69,7 +71,7 @@ class AuthService {
       }
       return user;
     } catch (e) {
-      print('Facebook sign-in failed: $e');
+      developer.log('Facebook sign-in failed: $e');
       return null;
     }
   }
@@ -116,7 +118,7 @@ class AuthService {
         return 'Registration failed. Please try again.';
       }
     } catch (e) {
-      print('Registration error: $e');
+      developer.log('Registration error: $e');
       return 'An unknown error occurred.';
     }
   }

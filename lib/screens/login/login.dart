@@ -4,7 +4,6 @@ import 'package:calorie_calculator/services/auth_service.dart';
 import 'package:calorie_calculator/services/firestore_service.dart';
 import 'package:calorie_calculator/services/shared_prefs_service.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class Login extends StatefulWidget {
   final VoidCallback onToggleTheme;
