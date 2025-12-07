@@ -6,7 +6,7 @@ class AppTheme {
       scaffoldBackgroundColor: Colors.white,
       primaryColor: const Color.fromARGB(255, 108, 179, 122),
       appBarTheme: const AppBarTheme(
-        backgroundColor: Color.fromARGB(255, 76, 175, 80),
+        backgroundColor: Color.fromARGB(255, 108, 179, 122),
         foregroundColor: Colors.white,
       ),
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
@@ -24,8 +24,7 @@ class AppTheme {
           padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 10),
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(15),
-              side: const BorderSide(
-                  color: Colors.black, width: 2)),
+              side: const BorderSide(color: Colors.black, width: 2)),
         ),
       ),
       colorScheme: const ColorScheme.light(
@@ -56,28 +55,27 @@ class AppTheme {
 
   static final ThemeData darkTheme = ThemeData(
     brightness: Brightness.dark,
-    scaffoldBackgroundColor: Colors.black,
+    scaffoldBackgroundColor: const Color.fromARGB(255, 18, 18, 18),
     primaryColor: const Color.fromARGB(255, 108, 179, 122),
     appBarTheme: const AppBarTheme(
       backgroundColor: Color.fromARGB(255, 108, 179, 122),
-      foregroundColor: Colors.black,
+      foregroundColor: Color.fromARGB(255, 18, 18, 18),
     ),
     floatingActionButtonTheme: const FloatingActionButtonThemeData(
       backgroundColor: Color.fromARGB(255, 108, 179, 122),
-      foregroundColor: Colors.black,
+      foregroundColor: Color.fromARGB(255, 18, 18, 18),
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.transparent,
-        foregroundColor: Colors.black,
+        foregroundColor: const Color.fromARGB(255, 18, 18, 18),
         iconColor: Colors.white,
         iconSize: 24,
         textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
         padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 10),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15),
-          side: const BorderSide(
-              color: Colors.white, width: 2),
+          side: const BorderSide(color: Colors.white, width: 2),
         ),
       ),
     ),
@@ -86,7 +84,7 @@ class AppTheme {
       secondary: Color.fromARGB(255, 0, 119, 255),
       onPrimary: Colors.black,
       onSecondary: Colors.white,
-      surface: Colors.black,
+      surface: Color.fromARGB(255, 18, 18, 18),
       onSurface: Colors.white,
     ),
     textTheme: const TextTheme(
@@ -109,7 +107,7 @@ class AppTheme {
 
   static Color backgroundColor(BuildContext context) =>
       Theme.of(context).brightness == Brightness.dark
-          ? Colors.black
+          ? const Color.fromARGB(255, 18, 18, 18)
           : Colors.white;
 
   static Color hourLineColor(BuildContext context) =>
@@ -121,4 +119,19 @@ class AppTheme {
       Theme.of(context).brightness == Brightness.dark
           ? Colors.white
           : Colors.black87;
+
+  static ButtonStyle primaryButtonStyle(BuildContext context) {
+    final theme = Theme.of(context);
+    return ElevatedButton.styleFrom(
+      backgroundColor: theme.colorScheme.primary,
+      foregroundColor: theme.colorScheme.onPrimary,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15),
+      ),
+      side: BorderSide.none,
+      elevation: 2,
+      shadowColor: theme.shadowColor.withAlpha(100),
+      padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 4),
+    );
+  }
 }

@@ -39,7 +39,7 @@ class _CustomTextFormfieldState extends State<CustomTextFormfield> {
       textInputAction: widget.textInputAction,
       obscureText: _obsecureText,
       decoration: InputDecoration(
-        border: const OutlineInputBorder(),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
         labelText: widget.label,
         suffixIcon: widget.obsecure
             ? IconButton(

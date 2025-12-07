@@ -1,5 +1,6 @@
 import 'package:calorie_calculator/screens/login/login.dart';
 import 'package:calorie_calculator/screens/register/register.dart';
+import 'package:calorie_calculator/theme/app_theme.dart';
 import 'package:calorie_calculator/utils/validations/form_validation.dart';
 import 'package:calorie_calculator/widgets/custom_textformfield.dart';
 import 'package:flutter/gestures.dart';
@@ -56,7 +57,7 @@ class LoginView extends StatelessWidget {
                         Shadow(
                           offset: const Offset(2, 2),
                           blurRadius: 6,
-                          color: Colors.black.withOpacity(0.8),
+                          color: Colors.black.withAlpha(210),
                         ),
                       ],
                     ),
@@ -66,7 +67,9 @@ class LoginView extends StatelessWidget {
                 Container(
                   width: double.infinity,
                   decoration: BoxDecoration(
-                    color: isDarkMode ? Colors.black : Colors.white,
+                    color: isDarkMode
+                        ? Theme.of(context).scaffoldBackgroundColor
+                        : Colors.white,
                     borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(30),
                       topRight: Radius.circular(30),
@@ -95,7 +98,7 @@ class LoginView extends StatelessWidget {
                         ),
                         const SizedBox(height: 25),
                         Padding(
-                          padding: const EdgeInsets.only(left: 14, right: 14),
+                          padding: const EdgeInsets.only(left: 24, right: 24),
                           child: CustomTextFormfield(
                             controller: state.emailCtrl,
                             validator: FormValidation.validateEmail,
@@ -105,7 +108,7 @@ class LoginView extends StatelessWidget {
                         ),
                         const SizedBox(height: 16),
                         Padding(
-                          padding: const EdgeInsets.only(left: 14, right: 14),
+                          padding: const EdgeInsets.only(left: 24, right: 24),
                           child: CustomTextFormfield(
                             controller: state.passCtrl,
                             validator: FormValidation.validatePassword,
@@ -118,14 +121,21 @@ class LoginView extends StatelessWidget {
                         SizedBox(
                           width: 160,
                           child: ElevatedButton(
+                            style: AppTheme.primaryButtonStyle(context),
                             onPressed: state.login,
-                            child: Text(
-                              'Log in',
-                              style: Theme.of(context).textTheme.bodyLarge,
+                            child: const Text(
+                              'Sign in',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.white),
                             ),
                           ),
                         ),
-                        const SizedBox(height: 30),
+                        const SizedBox(height: 5),
+                        Text('or'),
+                        const SizedBox(
+                          height: 5,
+                        ),
                         ElevatedButton.icon(
                             onPressed: () {},
                             icon: const Icon(Icons.apple),
@@ -136,7 +146,9 @@ class LoginView extends StatelessWidget {
                                 style: Theme.of(context).textTheme.bodyMedium,
                               ),
                             )),
-                        const SizedBox(height: 10),
+                        const SizedBox(
+                          height: 10,
+                        ),
                         ElevatedButton(
                           onPressed: state.loginWithGoogle,
                           child: Row(
@@ -172,7 +184,7 @@ class LoginView extends StatelessWidget {
                         RichText(
                           text: TextSpan(
                             text: "Don't have an account? ",
-                            style: const TextStyle(color: Colors.grey),
+                            style: Theme.of(context).textTheme.bodyMedium,
                             children: [
                               TextSpan(
                                 text: 'Register here.',
