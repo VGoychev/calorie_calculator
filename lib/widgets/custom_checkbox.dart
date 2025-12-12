@@ -17,7 +17,10 @@ class CustomCheckbox extends StatelessWidget {
     return CheckboxListTile(
       value: value,
       onChanged: onChanged,
-      title: Text(label),
+      title: Text(
+        label,
+        style: TextStyle(color: Colors.black),
+      ),
       controlAffinity: ListTileControlAffinity.leading,
       contentPadding: EdgeInsets.zero,
       activeColor: Theme.of(context).colorScheme.primary,

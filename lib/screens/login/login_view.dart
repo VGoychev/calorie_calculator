@@ -33,9 +33,9 @@ class LoginView extends StatelessWidget {
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
-                    Colors.black.withAlpha(150),
+                  isDarkMode ? Colors.black.withAlpha(150) : Colors.white.withAlpha(150),
                     Colors.transparent,
-                  ],
+                  ] ,
                 ),
               ),
             ),

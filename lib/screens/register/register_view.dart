@@ -11,97 +11,143 @@ class RegisterView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDarkMode = state.widget.themeMode == ThemeMode.dark;
+    final size = MediaQuery.of(context).size;
+
     return Scaffold(
-      appBar: AppBar(
-        actions: [
-          IconButton(
-            onPressed: state.widget.onToggleTheme,
-            icon: Icon(
-              isDarkMode ? Icons.dark_mode_outlined : Icons.light_mode_outlined,
-              color: isDarkMode ? Colors.black : Colors.white,
-              size: 36,
+      body: Stack(
+        children: [
+          Container(
+            height: size.height * 0.20,
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.primary,
+            ),
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    isDarkMode
+                        ? Colors.black.withAlpha(150)
+                        : Colors.white.withAlpha(150),
+                    Colors.transparent,
+                  ],
+                ),
+              ),
+            ),
+          ),
+          SingleChildScrollView(
+            child: Column(
+              children: [
+                SizedBox(height: size.height * 0.095),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Text(
+                    "Create new profile",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 28,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      shadows: [
+                        Shadow(
+                          offset: const Offset(2, 2),
+                          blurRadius: 6,
+                          color: Colors.black.withAlpha(210),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 30),
+                Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: isDarkMode
+                        ? Theme.of(context).scaffoldBackgroundColor
+                        : Colors.white,
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(30),
+                      topRight: Radius.circular(30),
+                    ),
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Colors.black26,
+                        blurRadius: 10,
+                        offset: Offset(0, -10),
+                      ),
+                    ],
+                  ),
+                  child: Form(
+                    key: state.formKey,
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 40),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 12, left: 12),
+                          child: CustomTextFormfield(
+                            controller: state.nameCtrl,
+                            validator: FormValidation.validateName,
+                            label: 'Enter your name',
+                          ),
+                        ),
+                        const SizedBox(height: 15),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 12, left: 12),
+                          child: CustomTextFormfield(
+                            controller: state.emailCtrl,
+                            validator: FormValidation.validateEmail,
+                            keyboardType: TextInputType.emailAddress,
+                            label: 'Enter your email',
+                          ),
+                        ),
+                        const SizedBox(height: 15),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 12, left: 12),
+                          child: CustomTextFormfield(
+                            controller: state.passCtrl,
+                            validator: FormValidation.validatePassword,
+                            obsecure: true,
+                            label: 'Enter your password',
+                          ),
+                        ),
+                        const SizedBox(height: 15),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 12, left: 12),
+                          child: CustomTextFormfield(
+                            controller: state.confirmPassCtrl,
+                            validator: FormValidation.validatePassword,
+                            obsecure: true,
+                            label: 'Confirm password',
+                          ),
+                        ),
+                        const SizedBox(height: 15),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 12, left: 12),
+                          child: GestureDetector(
+                            onTap: () => _showTermsDialog(context),
+                            child: CustomCheckbox(
+                              label: 'I agree to the terms & conditions.',
+                              value: state.agreedToTerms,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 40),
+                        ElevatedButton(
+                          onPressed: state.register,
+                          child: Text(
+                            'Sign up',
+                            style: Theme.of(context).textTheme.bodyLarge,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ],
-      ),
-      body: AnimatedSwitcher(
-        duration: const Duration(milliseconds: 400),
-        child: state.isLoading
-            ? const Center(
-                child: CircularProgressIndicator(),
-              )
-            : SingleChildScrollView(
-                child: Form(
-                  key: state.formKey,
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 20),
-                      const Text(
-                        'Register',
-                        style: TextStyle(fontSize: 32),
-                      ),
-                      const SizedBox(height: 20),
-                      Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: CustomTextFormfield(
-                          controller: state.nameCtrl,
-                          validator: FormValidation.validateName,
-                          label: 'Enter your name',
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: CustomTextFormfield(
-                          controller: state.emailCtrl,
-                          validator: FormValidation.validateEmail,
-                          keyboardType: TextInputType.emailAddress,
-                          label: 'Enter your email',
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: CustomTextFormfield(
-                          controller: state.passCtrl,
-                          validator: FormValidation.validatePassword,
-                          obsecure: true,
-                          label: 'Enter your password',
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: CustomTextFormfield(
-                          controller: state.confirmPassCtrl,
-                          validator: FormValidation.validatePassword,
-                          obsecure: true,
-                          label: 'Confirm password',
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: GestureDetector(
-                          onTap: () => _showTermsDialog(context),
-                          child: CustomCheckbox(
-                            label: 'I agree to the terms & conditions.',
-                            value: state.agreedToTerms,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      ElevatedButton(
-                          onPressed: state.register,
-                          child: Text(
-                            'Register',
-                            style: Theme.of(context).textTheme.bodyLarge,
-                          )),
-                      const SizedBox(height: 20),
-                    ],
-                  ),
-                ),
-              ),
       ),
     );
   }
@@ -150,7 +196,6 @@ For questions about these terms, please contact our support team.''',
             ElevatedButton(
               onPressed: () {
                 Navigator.of(context).pop();
-                // Optionally auto-check the agreement checkbox
                 state.setAgreement(true);
               },
               child: const Text('Accept'),
