@@ -17,7 +17,7 @@ class RegisterView extends StatelessWidget {
       body: Stack(
         children: [
           Container(
-            height: size.height * 0.20,
+            height: size.height * 0.5,
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.primary,
             ),
@@ -28,8 +28,8 @@ class RegisterView extends StatelessWidget {
                   end: Alignment.bottomCenter,
                   colors: [
                     isDarkMode
-                        ? Colors.black.withAlpha(150)
-                        : Colors.white.withAlpha(150),
+                        ? Colors.black.withAlpha(60)
+                        : Colors.white.withAlpha(60),
                     Colors.transparent,
                   ],
                 ),
@@ -125,9 +125,9 @@ class RegisterView extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.only(right: 12, left: 12),
                           child: GestureDetector(
-                            onTap: () => _showTermsDialog(context),
+                            onTap: () => _showTermsBottomSheet(context),
                             child: CustomCheckbox(
-                              label: 'I agree to the terms & conditions.',
+                              label: 'Terms & conditions.',
                               value: state.agreedToTerms,
                             ),
                           ),
@@ -147,60 +147,107 @@ class RegisterView extends StatelessWidget {
               ],
             ),
           ),
+          Positioned(
+            top: size.height * 0.09,
+            child: IconButton(
+              icon: const ImageIcon(
+                AssetImage('assets/icons/back.png'),
+                color: Colors.white,
+                size: 28,
+              ),
+              onPressed: () => Navigator.pop(context),
+            ),
+          ),
         ],
       ),
     );
   }
 
-  void _showTermsDialog(BuildContext context) {
-    showDialog(
+  void _showTermsBottomSheet(BuildContext context) {
+    showModalBottomSheet(
       context: context,
+      isScrollControlled: true,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Terms & Conditions'),
-          content: const SingleChildScrollView(
-            child: Text(
-              '''1. Acceptance of Terms
-By using this application, you agree to be bound by these terms and conditions.
+        return SizedBox(
+          height: MediaQuery.of(context).size.height * 0.7,
+          child: Column(
+            children: [
+              const SizedBox(height: 10),
+              Container(
+                width: 40,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Text(
+                      '''
+  1. Acceptance of Terms
+  By using this application, you agree to be bound by these terms and conditions.
 
-2. Use of Service
-You may use our service for lawful purposes only. You agree not to use the service in any way that could damage, disable, overburden, or impair the service.
+  2. Use of Service
+  You may use our service for lawful purposes only.
 
-3. Privacy Policy
-Your privacy is important to us. Please review our Privacy Policy, which also governs your use of the service.
+  3. Privacy Policy
+  Your privacy is important to us. Please review our Privacy Policy.
 
-4. User Content
-You are responsible for any content you post or transmit through the service. You grant us a non-exclusive, royalty-free license to use, copy, and display such content.
+  4. User Content
+  You are responsible for any content you post or transmit through the service.
 
-5. Disclaimer
-The service is provided "as is" without any warranties, express or implied.
+  5. Disclaimer
+  The service is provided "as is" without any warranties, express or implied.
 
-6. Limitation of Liability
-In no event shall we be liable for any indirect, incidental, special, consequential, or punitive damages.
+  6. Limitation of Liability
+  In no event shall we be liable for any indirect, incidental, special, consequential, or punitive damages.
 
-7. Changes to Terms
-We reserve the right to modify these terms at any time. Continued use of the service constitutes acceptance of modified terms.
+  7. Changes to Terms
+  We reserve the right to modify these terms at any time.
 
-8. Governing Law
-These terms shall be governed by and construed in accordance with applicable laws.
+  8. Governing Law
+  These terms shall be governed by and construed in accordance with applicable laws.
 
-For questions about these terms, please contact our support team.''',
-              style: TextStyle(fontSize: 14),
-            ),
+  For questions about these terms, please contact our support team.
+                        ''',
+                      style: const TextStyle(fontSize: 14),
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 16, 32, 32),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        state.setAgreement(true);
+                      },
+                      child: Text(
+                        'Accept',
+                        style: TextStyle(
+                          color: Theme.of(context).primaryColor,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    TextButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: Text('Close',
+                          style: Theme.of(context).textTheme.bodyLarge),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Close'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                state.setAgreement(true);
-              },
-              child: const Text('Accept'),
-            ),
-          ],
         );
       },
     );

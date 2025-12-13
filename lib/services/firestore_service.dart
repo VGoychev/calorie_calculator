@@ -15,20 +15,20 @@ class FirestoreService {
     final userDoc = _firestore.collection('users').doc(uid);
 
     final user = User(
-      uid: uid,
-      name: name?.trim(),
-      email: email?.trim(),
-      createdAt: createdAt.toDate(),
-      height: 0,
-      weight: 0,
-      activityLevel: 0,
-      age: 0
-    );
+        uid: uid,
+        name: name?.trim(),
+        email: email?.trim(),
+        createdAt: createdAt.toDate(),
+        gender: '',
+        height: 0,
+        weight: 0,
+        activityLevel: 0,
+        age: 0);
 
     await userDoc.set(user.toMap());
   }
 
-   Future<User?> getUserById(String uid) async {
+  Future<User?> getUserById(String uid) async {
     try {
       final doc = await _firestore.collection('users').doc(uid).get();
       if (doc.exists) {
@@ -45,5 +45,4 @@ class FirestoreService {
       return null;
     }
   }
-
 }

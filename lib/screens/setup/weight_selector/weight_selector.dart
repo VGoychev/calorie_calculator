@@ -5,12 +5,14 @@ class WeightSelector extends StatelessWidget {
   final Function(int) onSelectedWeight;
   final Function(int) onSelectedFraction;
   final int initialIndex;
+  final int initialFraction;
 
   const WeightSelector(
       {super.key,
       required this.onSelectedWeight,
       required this.onSelectedFraction,
-      this.initialIndex = 70});
+      this.initialIndex = 70,
+      this.initialFraction = 0});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +27,7 @@ class WeightSelector extends StatelessWidget {
           child: WheelPicker(
             builder: (context, index) => Text("${index}", style: textStyle),
             itemCount: 380,
-            initialIndex: 75,
+            initialIndex: initialIndex,
             looping: false,
             selectedIndexColor: Theme.of(context).colorScheme.onSecondary,
             onIndexChanged: (index, _) {
@@ -51,6 +53,7 @@ class WeightSelector extends StatelessWidget {
           child: WheelPicker(
             builder: (context, index) => Text("$index", style: textStyle),
             itemCount: 10,
+            initialIndex: initialFraction,
             looping: false,
             selectedIndexColor: Theme.of(context).colorScheme.onSecondary,
             onIndexChanged: (index, _) {

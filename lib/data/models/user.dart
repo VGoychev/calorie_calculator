@@ -5,6 +5,7 @@ class User {
   final String? email;
   final String? name;
   final DateTime createdAt;
+  final String gender;
   final double height;
   final double weight;
   final double activityLevel;
@@ -15,6 +16,7 @@ class User {
     required this.email,
     required this.name,
     required this.createdAt,
+    required this.gender,
     required this.height,
     required this.weight,
     required this.activityLevel,
@@ -28,6 +30,7 @@ class User {
       email: map['email'],
       name: map['name'],
       createdAt: (map['createdAt'] as Timestamp).toDate(),
+      gender: map['gender'] ?? '',
       height: (map['height'] ?? 0).toDouble(),
       weight: (map['weight'] ?? 0).toDouble(),
       activityLevel: (map['activity_level'] ?? 0).toDouble(),
@@ -51,6 +54,10 @@ class User {
 
 // Check if the user hasn’t filled profile yet
   bool get isNewUser {
-    return height == 0 && weight == 0 && activityLevel == 0 && age == 0;
+    return height == 0 &&
+        weight == 0 &&
+        activityLevel == 0 &&
+        age == 0 &&
+        gender.isEmpty;
   }
 }

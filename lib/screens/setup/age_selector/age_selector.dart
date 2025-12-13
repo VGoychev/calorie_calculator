@@ -20,7 +20,7 @@ class AgeSelector extends StatelessWidget {
           child: WheelPicker(
             builder: (context, index) => Text("$index", style: textStyle),
             itemCount: 113,
-            initialIndex: 18,
+            initialIndex: initialIndex,
             looping: false,
             selectedIndexColor: Theme.of(context).colorScheme.onSecondary,
             onIndexChanged: (index, interactionType) => onSelected(index),

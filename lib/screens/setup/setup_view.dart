@@ -1,5 +1,6 @@
 import 'package:calorie_calculator/screens/setup/activity_level_selector/activity_level_selector.dart';
 import 'package:calorie_calculator/screens/setup/age_selector/age_selector.dart';
+import 'package:calorie_calculator/screens/setup/gender_selector/gender_selector.dart';
 import 'package:calorie_calculator/screens/setup/height_selector/height_selector.dart';
 import 'package:calorie_calculator/screens/setup/setup.dart';
 import 'package:calorie_calculator/screens/setup/weight_selector/weight_selector.dart';
@@ -26,6 +27,50 @@ class SetupView extends StatelessWidget {
                   children: [
                     Center(
                       child: Text(
+                        'Select your gender',
+                        style: TextStyle(
+                          fontSize: 28,
+                          color: Theme.of(context).colorScheme.onSecondary,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    GenderSelector(
+                      onGenderSelected: (gender) {
+                        state.setGender(gender);
+                      },
+                      initialGender: state.gender,
+                    )
+                  ],
+                ),
+                Positioned(
+                  bottom: 60,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      state.pageController.nextPage(
+                          duration: const Duration(milliseconds: 300),
+                          curve: Curves.easeInOut);
+                    },
+                    child: Text(
+                      'Next',
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+          Container(
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Center(
+                      child: Text(
                         'Select your height',
                         style: TextStyle(
                           fontSize: 28,
@@ -37,7 +82,11 @@ class SetupView extends StatelessWidget {
                       height: 20,
                     ),
                     HeightSelector(
-                        onSelected: (height) => state.height = height)
+                      onSelected: (height) {
+                        state.setHeight(height);
+                      },
+                      initialIndex: state.height,
+                    )
                   ],
                 ),
                 Positioned(
@@ -77,9 +126,15 @@ class SetupView extends StatelessWidget {
                       height: 20,
                     ),
                     WeightSelector(
-                        onSelectedWeight: (weight) => state.weightInt = weight,
-                        onSelectedFraction: (fraction) =>
-                            state.weightFraction = fraction),
+                      onSelectedWeight: (weight) {
+                        state.setWeight(weight);
+                      },
+                      onSelectedFraction: (fraction) {
+                        state.setWeightFraction(fraction);
+                      },
+                      initialIndex: state.weightInt,
+                      initialFraction: state.weightFraction,
+                    ),
                   ],
                 ),
                 Positioned(
@@ -118,7 +173,12 @@ class SetupView extends StatelessWidget {
                     SizedBox(
                       height: 20,
                     ),
-                    AgeSelector(onSelected: (age) => state.age = age)
+                    AgeSelector(
+                      onSelected: (age) {
+                        state.setAge(age);
+                      },
+                      initialIndex: state.age,
+                    )
                   ],
                 ),
                 Positioned(
@@ -156,7 +216,11 @@ class SetupView extends StatelessWidget {
                     height: 20,
                   ),
                   ActivityLevelSelector(
-                      onSelected: (level) => state.activityLevel = level),
+                    onSelected: (level) {
+                      state.setActivityLevel(level);
+                    },
+                    initialLevel: state.activityLevel,
+                  ),
                 ]),
                 Positioned(
                   bottom: 60,

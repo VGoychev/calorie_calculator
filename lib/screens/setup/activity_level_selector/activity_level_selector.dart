@@ -2,15 +2,30 @@ import 'package:flutter/material.dart';
 
 class ActivityLevelSelector extends StatefulWidget {
   final Function(String) onSelected;
-
-  const ActivityLevelSelector({super.key, required this.onSelected});
+  final String initialLevel;
+  const ActivityLevelSelector(
+      {super.key, required this.onSelected, this.initialLevel = "Light"});
 
   @override
   State<ActivityLevelSelector> createState() => _ActivityLevelSelectorState();
 }
 
 class _ActivityLevelSelectorState extends State<ActivityLevelSelector> {
-  String selectedLevel = '';
+  late String selectedLevel;
+
+  @override
+  void initState() {
+    super.initState();
+    selectedLevel = widget.initialLevel;
+  }
+
+  @override
+  void didUpdateWidget(ActivityLevelSelector oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.initialLevel != oldWidget.initialLevel) {
+      selectedLevel = widget.initialLevel;
+    }
+  }
 
   final activityLevels = [
     {
