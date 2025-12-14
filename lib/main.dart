@@ -1,5 +1,11 @@
 import 'package:calorie_calculator/firebase_options.dart';
+import 'package:calorie_calculator/root.dart';
+import 'package:calorie_calculator/screens/home/home.dart';
 import 'package:calorie_calculator/screens/login/login.dart';
+import 'package:calorie_calculator/screens/onboarding/onboarding.dart';
+import 'package:calorie_calculator/screens/register/register.dart';
+import 'package:calorie_calculator/screens/setup/setup.dart';
+import 'package:calorie_calculator/screens/welcome/welcome.dart';
 import 'package:calorie_calculator/services/shared_prefs_service.dart';
 import 'package:calorie_calculator/theme/app_theme.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -11,7 +17,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await RiveFile.initialize();
 
-  
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -63,7 +68,16 @@ class _MyAppState extends State<MyApp> {
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: _themeMode,
-      home: Login(onToggleTheme: _toggleTheme, themeMode: _themeMode),
+      routes: {
+        '/': (context) => Root(),
+        '/login': (context) => Login(),
+        '/register': (context) => Register(),
+        '/home': (context) => Home(),
+        '/welcome': (context) => Welcome(),
+        '/onboarding': (context) => Onboarding(),
+        '/setup': (context) => Setup(),
+      },
+      initialRoute: '/',
       debugShowCheckedModeBanner: false,
     );
   }

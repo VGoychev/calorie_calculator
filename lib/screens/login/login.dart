@@ -6,13 +6,8 @@ import 'package:calorie_calculator/services/shared_prefs_service.dart';
 import 'package:flutter/material.dart';
 
 class Login extends StatefulWidget {
-  final VoidCallback onToggleTheme;
-  final ThemeMode themeMode;
-
   const Login({
     super.key,
-    required this.onToggleTheme,
-    required this.themeMode,
   });
 
   @override
@@ -120,9 +115,7 @@ class LoginState extends State<Login> {
         context,
         PageRouteBuilder(
           transitionDuration: const Duration(milliseconds: 1000),
-          pageBuilder: (context, animation, secondaryAnimation) => Welcome(
-            themeMode: widget.themeMode,
-          ),
+          pageBuilder: (context, animation, secondaryAnimation) => Welcome(),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return FadeTransition(
               opacity: animation,
@@ -139,9 +132,7 @@ class LoginState extends State<Login> {
         context,
         PageRouteBuilder(
           transitionDuration: const Duration(milliseconds: 1000),
-          pageBuilder: (context, animation, secondaryAnimation) => Welcome(
-            themeMode: widget.themeMode,
-          ),
+          pageBuilder: (context, animation, secondaryAnimation) => Welcome(),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return FadeTransition(
               opacity: animation,

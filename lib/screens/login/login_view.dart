@@ -20,11 +20,12 @@ class LoginView extends StatelessWidget {
       body: Stack(
         children: [
           Container(
-            height: size.height * 0.28,
+            height: size.height * 0.55,
             decoration: const BoxDecoration(
               image: DecorationImage(
                 image: AssetImage('assets/images/background_login.png'),
                 fit: BoxFit.cover,
+                alignment: Alignment.bottomCenter,
               ),
             ),
             child: Container(
@@ -33,9 +34,11 @@ class LoginView extends StatelessWidget {
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
-                  isDarkMode ? Colors.black.withAlpha(150) : Colors.white.withAlpha(150),
+                    isDarkMode
+                        ? Colors.black.withAlpha(60)
+                        : Colors.white.withAlpha(60),
                     Colors.transparent,
-                  ] ,
+                  ],
                 ),
               ),
             ),
@@ -198,11 +201,7 @@ class LoginView extends StatelessWidget {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => Register(
-                                          onToggleTheme:
-                                              state.widget.onToggleTheme,
-                                          themeMode: ThemeMode.system,
-                                        ),
+                                        builder: (context) => Register(),
                                       ),
                                     );
                                   },

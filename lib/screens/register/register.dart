@@ -3,11 +3,7 @@ import 'package:calorie_calculator/services/auth_service.dart';
 import 'package:flutter/material.dart';
 
 class Register extends StatefulWidget {
-  final VoidCallback onToggleTheme;
-  final ThemeMode themeMode;
-
-  const Register(
-      {super.key, required this.onToggleTheme, required this.themeMode});
+  const Register({super.key});
 
   @override
   State<StatefulWidget> createState() => RegisterState();

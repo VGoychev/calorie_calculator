@@ -2,9 +2,7 @@ import 'package:calorie_calculator/screens/setup/setup_view.dart';
 import 'package:flutter/material.dart';
 
 class Setup extends StatefulWidget {
-  final ThemeMode themeMode;
-
-  const Setup(this.themeMode, {super.key});
+  const Setup({super.key});
 
   @override
   State<StatefulWidget> createState() => SetupState();
@@ -55,6 +53,8 @@ class SetupState extends State<Setup> {
       this.activityLevel = activityLevel;
     });
   }
+
+  void onFinishSetup() {}
 
   @override
   Widget build(BuildContext context) {

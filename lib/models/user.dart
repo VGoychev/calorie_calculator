@@ -45,6 +45,7 @@ class User {
       'email': email,
       'name': name,
       'createdAt': Timestamp.fromDate(createdAt),
+      'gender': gender,
       'height': height,
       'weight': weight,
       'activity_level': activityLevel,
@@ -59,5 +60,34 @@ class User {
         activityLevel == 0 &&
         age == 0 &&
         gender.isEmpty;
+  }
+
+  // Local JSON serialization
+  Map<String, dynamic> toJson() {
+    return {
+      'uid': uid,
+      'email': email,
+      'name': name,
+      'createdAt': createdAt.toIso8601String(),
+      'gender': gender,
+      'height': height,
+      'weight': weight,
+      'activity_level': activityLevel,
+      'age': age,
+    };
+  }
+
+  factory User.fromJson(Map<String, dynamic> json) {
+    return User(
+      uid: json['uid'] ?? '',
+      email: json['email'],
+      name: json['name'],
+      createdAt: DateTime.tryParse(json['createdAt'] ?? '') ?? DateTime.now(),
+      gender: json['gender'] ?? '',
+      height: (json['height'] ?? 0).toDouble(),
+      weight: (json['weight'] ?? 0).toDouble(),
+      activityLevel: (json['activity_level'] ?? 0).toDouble(),
+      age: (json['age'] ?? 0).toInt(),
+    );
   }
 }

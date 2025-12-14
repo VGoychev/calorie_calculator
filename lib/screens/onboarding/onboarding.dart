@@ -5,9 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:rive/rive.dart';
 
 class Onboarding extends StatefulWidget {
-  final ThemeMode themeMode;
-
-  const Onboarding(this.themeMode, {super.key});
+  const Onboarding({super.key});
   @override
   State<StatefulWidget> createState() => OnboardingState();
 }
@@ -15,7 +13,7 @@ class Onboarding extends StatefulWidget {
 class OnboardingState extends State<Onboarding> {
   Artboard? artboard;
   StateMachineController? _controller;
-  
+
   @override
   void initState() {
     super.initState();
@@ -40,8 +38,7 @@ class OnboardingState extends State<Onboarding> {
       context,
       PageRouteBuilder(
         transitionDuration: const Duration(milliseconds: 800),
-        pageBuilder: (context, animation, secondaryAnimation) =>
-            Setup(widget.themeMode),
+        pageBuilder: (context, animation, secondaryAnimation) => Setup(),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           return FadeTransition(
             opacity: animation,

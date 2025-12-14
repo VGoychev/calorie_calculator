@@ -10,7 +10,7 @@ class RegisterView extends StatelessWidget {
   const RegisterView(this.state, {super.key});
   @override
   Widget build(BuildContext context) {
-    final isDarkMode = state.widget.themeMode == ThemeMode.dark;
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     final size = MediaQuery.of(context).size;
 
     return Scaffold(

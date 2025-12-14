@@ -5,9 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:rive/rive.dart';
 
 class Welcome extends StatefulWidget {
-  final ThemeMode themeMode;
-
-  const Welcome({super.key, required this.themeMode});
+  const Welcome({super.key});
 
   @override
   State<StatefulWidget> createState() => WelcomeState();
@@ -41,8 +39,7 @@ class WelcomeState extends State<Welcome> {
       context,
       PageRouteBuilder(
         transitionDuration: const Duration(milliseconds: 500),
-        pageBuilder: (context, animation, secondaryAnimation) =>
-            Onboarding(widget.themeMode),
+        pageBuilder: (context, animation, secondaryAnimation) => Onboarding(),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           return FadeTransition(
             opacity: animation,

@@ -9,7 +9,7 @@ class WelcomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDarkMode = state.widget.themeMode == ThemeMode.dark;
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
       appBar: AppBar(
@@ -80,8 +80,12 @@ class WelcomeView extends StatelessWidget {
             ),
             Positioned(
                 bottom: 60,
-                child:
-                    ElevatedButton(onPressed: state.onContinueClick, child: Text('Let\'s Get Started!', style: TextStyle(color: Colors.white),)))
+                child: ElevatedButton(
+                    onPressed: state.onContinueClick,
+                    child: Text(
+                      'Let\'s Get Started!',
+                      style: TextStyle(color: Colors.white),
+                    )))
           ],
         ),
       ),

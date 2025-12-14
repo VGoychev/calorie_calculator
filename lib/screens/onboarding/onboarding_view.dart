@@ -8,7 +8,7 @@ class OnboardingView extends StatelessWidget {
   const OnboardingView(this.state, {super.key});
   @override
   Widget build(BuildContext context) {
-    final isDarkMode = state.widget.themeMode == ThemeMode.dark;
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
       appBar: AppBar(
