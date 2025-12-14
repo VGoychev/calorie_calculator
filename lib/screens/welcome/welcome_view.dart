@@ -5,7 +5,7 @@ import 'package:rive/rive.dart';
 class WelcomeView extends StatelessWidget {
   final WelcomeState state;
 
-  WelcomeView(this.state, {super.key});
+  const WelcomeView(this.state, {super.key});
 
   @override
   Widget build(BuildContext context) {

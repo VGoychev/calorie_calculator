@@ -1,7 +1,7 @@
 import 'package:calorie_calculator/screens/register/register.dart';
 import 'package:calorie_calculator/utils/validations/form_validation.dart';
-import 'package:calorie_calculator/widgets/custom_checkbox.dart';
-import 'package:calorie_calculator/widgets/custom_textformfield.dart';
+import 'package:calorie_calculator/widgets/custom_checkbox/custom_checkbox.dart';
+import 'package:calorie_calculator/widgets/custom_textformfield/custom_textformfield.dart';
 import 'package:flutter/material.dart';
 
 class RegisterView extends StatelessWidget {
