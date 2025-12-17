@@ -1,5 +1,6 @@
 import 'package:calorie_calculator/screens/register/register_view.dart';
 import 'package:calorie_calculator/services/auth_service.dart';
+import 'package:calorie_calculator/widgets/terms_bottom_sheet/terms_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 
 class Register extends StatefulWidget {
@@ -88,5 +89,12 @@ class RegisterState extends State<Register> {
   @override
   Widget build(BuildContext context) {
     return RegisterView(this);
+  }
+
+  void onTermsTap() async {
+    final agreedToTerms = await TermsBottomSheet.show(context);
+    setState(() {
+      _agreedToTerms = agreedToTerms ?? false;
+    });
   }
 }
