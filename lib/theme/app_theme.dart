@@ -134,4 +134,9 @@ class AppTheme {
       padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 4),
     );
   }
+
+  static Color bottomNavButton(BuildContext context) =>
+      Theme.of(context).brightness == Brightness.dark
+          ? Colors.white54
+          : Colors.black87.withAlpha(200);
 }

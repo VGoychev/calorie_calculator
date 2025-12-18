@@ -1,10 +1,10 @@
 import 'package:calorie_calculator/screens/setup/setup.dart';
-import 'package:calorie_calculator/widgets/activity_level_selector/activity_level_selector.dart';
-import 'package:calorie_calculator/widgets/age_selector/age_selector.dart';
+import 'package:calorie_calculator/widgets/selectors/activity_level_selector/activity_level_selector.dart';
+import 'package:calorie_calculator/widgets/selectors/age_selector/age_selector.dart';
 import 'package:calorie_calculator/widgets/back_only_pageview/back_only_pageview.dart';
-import 'package:calorie_calculator/widgets/gender_selector/gender_selector.dart';
-import 'package:calorie_calculator/widgets/height_selector/height_selector.dart';
-import 'package:calorie_calculator/widgets/weight_selector/weight_selector.dart';
+import 'package:calorie_calculator/widgets/selectors/gender_selector/gender_selector.dart';
+import 'package:calorie_calculator/widgets/selectors/height_selector/height_selector.dart';
+import 'package:calorie_calculator/widgets/selectors/weight_selector/weight_selector.dart';
 import 'package:flutter/material.dart';
 
 class SetupView extends StatelessWidget {

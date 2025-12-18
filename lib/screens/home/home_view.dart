@@ -1,22 +1,23 @@
+import 'package:calorie_calculator/screens/home/home.dart';
 import 'package:calorie_calculator/widgets/home_bottom_app_bar/bottom_app_bar_widget.dart';
+import 'package:calorie_calculator/widgets/home_bottom_app_bar/floating_button.dart';
 import 'package:flutter/material.dart';
 
 class HomeView extends StatelessWidget {
-  const HomeView({super.key});
+  final HomeState state;
+  const HomeView(this.state, {super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Text('Home'),
-      ),
-      floatingActionButton: FloatingActionButton(
-        shape: const CircleBorder(),
+      body: state.mainPageController.getPage(state.currentPage),
+      floatingActionButton: FloatingButton(
         onPressed: () {},
-        child: const Icon(Icons.add, size: 36),
       ),
       floatingActionButtonLocation: _CustomFabLocation(),
-      bottomNavigationBar: BottomAppBarWidget(),
+      floatingActionButtonAnimator: FloatingActionButtonAnimator.noAnimation,
+      bottomNavigationBar:
+          BottomAppBarWidget(state.currentPage, state.onPageChanged),
     );
   }
 }
