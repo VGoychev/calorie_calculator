@@ -1,4 +1,5 @@
 import 'package:calorie_calculator/screens/onboarding/onboarding.dart';
+import 'package:calorie_calculator/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:rive/rive.dart';
 
@@ -81,9 +82,10 @@ class OnboardingView extends StatelessWidget {
               bottom: 60,
               child: ElevatedButton(
                 onPressed: state.onContinueClick,
+                style: AppTheme.primaryButtonStyle(context),
                 child: const Text(
                   'Continue',
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
                 ),
               ),
             )

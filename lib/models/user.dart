@@ -55,11 +55,45 @@ class User {
 
 // Check if the user hasn’t filled profile yet
   bool get isNewUser {
-    return height == 0 &&
-        weight == 0 &&
-        activityLevel == 0 &&
-        age == 0 &&
+    return height == 0 ||
+        weight == 0 ||
+        activityLevel == 0 ||
+        age == 0 ||
         gender.isEmpty;
+  }
+
+  double activityLevelToDouble(String activity) {
+    switch (activity) {
+      case 'Sedentary':
+        return 1.2;
+      case 'Light':
+        return 1.375;
+      case 'Moderate':
+        return 1.55;
+      case 'Active':
+        return 1.725;
+      case 'Very active':
+        return 1.9;
+      default:
+        return 1.2;
+    }
+  }
+
+  String activityLevelToString(double activityMultiplier) {
+    switch (activityMultiplier) {
+      case 1.2:
+        return 'Sedentary';
+      case 1.375:
+        return 'Light';
+      case 1.55:
+        return 'Moderate';
+      case 1.725:
+        return 'Active';
+      case 1.9:
+        return 'Very active';
+      default:
+        return 'Sedentary';
+    }
   }
 
   // Local JSON serialization

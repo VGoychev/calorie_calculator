@@ -10,7 +10,6 @@ final AuthService authService = AuthService();
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final firestoreService = FirestoreService();
   final GoogleSignIn _googleSignIn = GoogleSignIn(
     scopes: ['email'],
   );

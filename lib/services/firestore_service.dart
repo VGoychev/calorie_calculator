@@ -3,6 +3,8 @@ import 'dart:developer';
 import 'package:calorie_calculator/models/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+final FirestoreService firestoreService = FirestoreService();
+
 class FirestoreService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
@@ -46,8 +48,8 @@ class FirestoreService {
     }
   }
 
-  Future<void> updateUser(User user) async {
-    final userDoc = _firestore.collection('users').doc(user.uid);
-    await userDoc.update(user.toMap());
+  Future<void> updateUser(String uid, Map<String, dynamic> data) async {
+    final userDoc = _firestore.collection('users').doc(uid);
+    await userDoc.update(data);
   }
 }

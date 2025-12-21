@@ -1,4 +1,5 @@
 import 'package:calorie_calculator/screens/setup/setup.dart';
+import 'package:calorie_calculator/theme/app_theme.dart';
 import 'package:calorie_calculator/widgets/selectors/activity_level_selector/activity_level_selector.dart';
 import 'package:calorie_calculator/widgets/selectors/age_selector/age_selector.dart';
 import 'package:calorie_calculator/widgets/back_only_pageview/back_only_pageview.dart';
@@ -59,6 +60,7 @@ Widget _genderSelector(SetupState state, BuildContext context) {
       Positioned(
         bottom: 60,
         child: ElevatedButton(
+          style: AppTheme.primaryButtonStyle(context),
           onPressed: () {
             state.pageController.nextPage(
                 duration: const Duration(milliseconds: 300),
@@ -66,7 +68,7 @@ Widget _genderSelector(SetupState state, BuildContext context) {
           },
           child: Text(
             'Next',
-            style: Theme.of(context).textTheme.bodyLarge,
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
           ),
         ),
       )
@@ -104,6 +106,7 @@ Widget _heightSelector(SetupState state, BuildContext context) {
       Positioned(
         bottom: 60,
         child: ElevatedButton(
+          style: AppTheme.primaryButtonStyle(context),
           onPressed: () {
             state.pageController.nextPage(
                 duration: const Duration(milliseconds: 300),
@@ -111,7 +114,7 @@ Widget _heightSelector(SetupState state, BuildContext context) {
           },
           child: Text(
             'Next',
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
           ),
         ),
       )
@@ -153,6 +156,7 @@ Widget _weightSelector(SetupState state, BuildContext context) {
       Positioned(
         bottom: 60,
         child: ElevatedButton(
+          style: AppTheme.primaryButtonStyle(context),
           onPressed: () {
             state.pageController.nextPage(
                 duration: const Duration(milliseconds: 300),
@@ -160,7 +164,7 @@ Widget _weightSelector(SetupState state, BuildContext context) {
           },
           child: Text(
             'Next',
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
           ),
         ),
       )
@@ -198,6 +202,7 @@ Widget _ageSelector(SetupState state, BuildContext context) {
       Positioned(
         bottom: 60,
         child: ElevatedButton(
+          style: AppTheme.primaryButtonStyle(context),
           onPressed: () {
             state.pageController.nextPage(
                 duration: const Duration(milliseconds: 300),
@@ -205,7 +210,7 @@ Widget _ageSelector(SetupState state, BuildContext context) {
           },
           child: Text(
             'Next',
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
           ),
         ),
       )
@@ -240,14 +245,13 @@ Widget _activityLevelSelector(SetupState state, BuildContext context) {
       Positioned(
         bottom: 60,
         child: ElevatedButton(
+          style: AppTheme.primaryButtonStyle(context),
           onPressed: () {
-            state.pageController.nextPage(
-                duration: const Duration(milliseconds: 300),
-                curve: Curves.easeInOut);
+            state.onFinishSetup();
           },
           child: Text(
-            'Next',
-            style: TextStyle(color: Colors.white),
+            'Finish',
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
           ),
         ),
       )

@@ -19,8 +19,6 @@ class LoginState extends State<Login> {
   late final TextEditingController passCtrl, emailCtrl;
   final SharedPrefsService _prefsService = SharedPrefsService();
   bool _isInitialized = false;
-  final _authService = AuthService();
-  final _firestoreService = FirestoreService();
 
   @override
   void initState() {
@@ -63,13 +61,13 @@ class LoginState extends State<Login> {
     if (!formKey.currentState!.validate()) return;
 
     String? result =
-        await _authService.loginUser(email: email, password: password);
+        await authService.loginUser(email: email, password: password);
 
     if (result == null) {
       emailCtrl.clear();
       passCtrl.clear();
 
-      final user = _authService.getCurrentUser();
+      final user = authService.getCurrentUser();
       if (user != null) {
         await _checkIfNewUser(user.uid, context);
       }
@@ -90,7 +88,7 @@ class LoginState extends State<Login> {
   Future<void> loginWithGoogle() async {
     if (!_isInitialized) return;
 
-    final userCredential = await _authService.loginWithGoogle();
+    final userCredential = await authService.loginWithGoogle();
 
     if (userCredential != null) {
       await _checkIfNewUser(userCredential.uid, context);
@@ -100,7 +98,7 @@ class LoginState extends State<Login> {
   Future<void> loginWithFacebook() async {
     if (!_isInitialized) return;
 
-    final userCredential = await _authService.loginWithFacebook();
+    final userCredential = await authService.loginWithFacebook();
 
     if (userCredential != null) {
       await _checkIfNewUser(userCredential.uid, context);
@@ -108,7 +106,7 @@ class LoginState extends State<Login> {
   }
 
   Future<void> _checkIfNewUser(String uid, BuildContext context) async {
-    final userDoc = await _firestoreService.getUserById(uid);
+    final userDoc = await firestoreService.getUserById(uid);
 
     if (userDoc == null) {
       Navigator.pushReplacement(

@@ -1,6 +1,10 @@
+import 'package:calorie_calculator/models/user.dart';
 import 'package:calorie_calculator/screens/home/home.dart';
 import 'package:calorie_calculator/screens/login/login.dart';
+import 'package:calorie_calculator/screens/welcome/welcome.dart';
 import 'package:calorie_calculator/services/auth_service.dart';
+import 'package:calorie_calculator/services/firestore_service.dart';
+import 'package:calorie_calculator/widgets/loading_dialog/loading_dialog.dart';
 import 'package:flutter/material.dart';
 
 class Root extends StatefulWidget {
@@ -35,15 +39,26 @@ class _RootState extends State<Root> {
     try {
       final uid = await authService.getCurrentUserId();
       if (!mounted) return;
-
-      setState(() {
+      bool? isNewUser = await _checkIsNewUser(uid);
+      if (isNewUser == true) {
+        _uid = 'newUser';
+      } else if (isNewUser == null) {
+        _uid = 'guest';
+      } else {
         _uid = uid;
-      });
+      }
     } catch (e) {
       if (!mounted) return;
-      setState(() {
-        _uid = 'guest';
-      });
+      _uid = 'guest';
+    }
+  }
+
+  Future<bool?> _checkIsNewUser(String uid) async {
+    try {
+      final User? user = await firestoreService.getUserById(uid);
+      return user!.isNewUser;
+    } catch (e) {
+      return null;
     }
   }
 
@@ -52,10 +67,12 @@ class _RootState extends State<Root> {
     Widget content;
     if (_showLoader) {
       content = const Center(
-        child: CircularProgressIndicator(),
+        child: LoadingDialogWidget(),
       );
     } else if (_uid == 'guest') {
       content = const Login();
+    } else if (_uid == 'newUser') {
+      content = const Welcome();
     } else {
       content = const Home();
     }

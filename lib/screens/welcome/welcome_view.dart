@@ -1,4 +1,5 @@
 import 'package:calorie_calculator/screens/welcome/welcome.dart';
+import 'package:calorie_calculator/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:rive/rive.dart';
 
@@ -82,9 +83,10 @@ class WelcomeView extends StatelessWidget {
                 bottom: 60,
                 child: ElevatedButton(
                     onPressed: state.onContinueClick,
+                    style: AppTheme.primaryButtonStyle(context),
                     child: Text(
                       'Let\'s Get Started!',
-                      style: TextStyle(color: Colors.white),
+                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
                     )))
           ],
         ),

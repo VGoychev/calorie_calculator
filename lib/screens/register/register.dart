@@ -59,7 +59,7 @@ class RegisterState extends State<Register> {
 
     setState(() => _isLoading = true); // Start loading
 
-    String? result = await AuthService().registerUser(
+    String? result = await authService.registerUser(
       name: name,
       email: email,
       password: passCtrl.text,

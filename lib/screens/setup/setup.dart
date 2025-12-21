@@ -1,4 +1,9 @@
+import 'dart:developer' as developer;
+
 import 'package:calorie_calculator/screens/setup/setup_view.dart';
+import 'package:calorie_calculator/services/auth_service.dart';
+import 'package:calorie_calculator/services/firestore_service.dart';
+import 'package:calorie_calculator/widgets/loading_dialog/loading_dialog.dart';
 import 'package:flutter/material.dart';
 
 class Setup extends StatefulWidget {
@@ -9,6 +14,7 @@ class Setup extends StatefulWidget {
 }
 
 class SetupState extends State<Setup> {
+  double? activityMultiplier;
   int weightInt = 75;
   int weightFraction = 0;
   int height = 170;
@@ -54,7 +60,34 @@ class SetupState extends State<Setup> {
     });
   }
 
-  void onFinishSetup() {}
+  Future<void> onFinishSetup() async {
+    final userId = await authService.getCurrentUserId();
+    final user = await firestoreService.getUserById(userId);
+    try {
+      if (user != null) {
+        activityMultiplier = user.activityLevelToDouble(activityLevel);
+        await firestoreService.updateUser(
+          userId,
+          {
+            'weight': weightInt + weightFraction / 10.0,
+            'height': height.toDouble(),
+            'age': age,
+            'gender': gender,
+            'activity_level': activityMultiplier,
+          },
+        );
+        if (!mounted) return;
+        LoadingDialog.show(context);
+        await Future.delayed(Duration(milliseconds: 2000));
+        if (!mounted) return;
+        LoadingDialog.close(context);
+        if (!mounted) return;
+        await Navigator.pushReplacementNamed(context, '/home');
+      }
+    } catch (e) {
+      developer.log('$e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
