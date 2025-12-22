@@ -1,4 +1,3 @@
-import 'package:calorie_calculator/screens/home/controller/main_page_controller.dart';
 import 'package:calorie_calculator/screens/home/home_view.dart';
 import 'package:flutter/material.dart';
 
@@ -11,12 +10,10 @@ class Home extends StatefulWidget {
 
 class HomeState extends State<Home> {
   late String currentPage;
-  late final MainPageController mainPageController;
 
   @override
   void initState() {
     super.initState();
-    mainPageController = MainPageController();
     currentPage = 'home';
   }
 

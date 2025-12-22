@@ -3,21 +3,21 @@ import 'package:flutter/material.dart';
 class AppTheme {
   static final ThemeData lightTheme = ThemeData(
       brightness: Brightness.light,
-      scaffoldBackgroundColor: Colors.white,
+      scaffoldBackgroundColor: const Color.fromARGB(255, 234, 230, 230),
       primaryColor: const Color.fromARGB(255, 108, 179, 122),
       appBarTheme: const AppBarTheme(
         backgroundColor: Color.fromARGB(255, 108, 179, 122),
-        foregroundColor: Colors.white,
+        foregroundColor: Color.fromARGB(255, 234, 230, 230),
       ),
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
         backgroundColor: Color.fromARGB(255, 108, 179, 122),
-        foregroundColor: Colors.white,
+        foregroundColor: Color.fromARGB(255, 234, 230, 230),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.transparent,
           shadowColor: Colors.transparent,
-          foregroundColor: Colors.white,
+          foregroundColor: const Color.fromARGB(255, 234, 230, 230),
           iconColor: Colors.black,
           iconSize: 24,
           textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
@@ -32,7 +32,7 @@ class AppTheme {
         secondary: Color.fromARGB(255, 0, 119, 255),
         onPrimary: Colors.white,
         onSecondary: Colors.black,
-        surface: Colors.white,
+        surface: Color.fromARGB(255, 234, 230, 230),
         onSurface: Colors.black,
       ),
       textTheme: const TextTheme(
@@ -55,20 +55,20 @@ class AppTheme {
 
   static final ThemeData darkTheme = ThemeData(
     brightness: Brightness.dark,
-    scaffoldBackgroundColor: const Color.fromARGB(255, 18, 18, 18),
+    scaffoldBackgroundColor: const Color.fromARGB(255, 23, 23, 23),
     primaryColor: const Color.fromARGB(255, 108, 179, 122),
     appBarTheme: const AppBarTheme(
       backgroundColor: Color.fromARGB(255, 108, 179, 122),
-      foregroundColor: Color.fromARGB(255, 18, 18, 18),
+      foregroundColor: Color.fromARGB(255, 23, 23, 23),
     ),
     floatingActionButtonTheme: const FloatingActionButtonThemeData(
       backgroundColor: Color.fromARGB(255, 108, 179, 122),
-      foregroundColor: Color.fromARGB(255, 18, 18, 18),
+      foregroundColor: Color.fromARGB(255, 23, 23, 23),
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.transparent,
-        foregroundColor: const Color.fromARGB(255, 18, 18, 18),
+        foregroundColor: const Color.fromARGB(255, 23, 23, 23),
         iconColor: Colors.white,
         iconSize: 24,
         textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
@@ -80,11 +80,11 @@ class AppTheme {
       ),
     ),
     colorScheme: const ColorScheme.dark(
-      primary: Color.fromARGB(255, 108, 179, 122),
+      primary: Color(0xFF6CB37A),
       secondary: Color.fromARGB(255, 0, 119, 255),
       onPrimary: Colors.black,
       onSecondary: Colors.white,
-      surface: Color.fromARGB(255, 18, 18, 18),
+      surface: Color.fromARGB(255, 23, 23, 23),
       onSurface: Colors.white,
     ),
     textTheme: const TextTheme(
@@ -107,8 +107,8 @@ class AppTheme {
 
   static Color backgroundColor(BuildContext context) =>
       Theme.of(context).brightness == Brightness.dark
-          ? const Color.fromARGB(255, 18, 18, 18)
-          : Colors.white;
+          ? const Color.fromARGB(255, 23, 23, 23)
+          : const Color.fromARGB(255, 234, 230, 230);
 
   static Color hourLineColor(BuildContext context) =>
       Theme.of(context).brightness == Brightness.dark
@@ -139,4 +139,9 @@ class AppTheme {
       Theme.of(context).brightness == Brightness.dark
           ? Colors.white54
           : Colors.black87.withAlpha(200);
+
+  static Color red = Color.fromARGB(255, 235, 87, 87);
+  static Color purple = Color.fromARGB(255, 155, 81, 224);
+  static Color blue = Color.fromARGB(255, 47, 129, 237);
+  static Color lighterGreen = Color.fromARGB(255, 126, 218, 144);
 }

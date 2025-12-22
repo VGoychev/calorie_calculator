@@ -1,3 +1,4 @@
+import 'package:calorie_calculator/screens/home/controller/main_page_controller.dart';
 import 'package:calorie_calculator/screens/home/home.dart';
 import 'package:calorie_calculator/widgets/home_bottom_app_bar/bottom_app_bar_widget.dart';
 import 'package:calorie_calculator/widgets/home_bottom_app_bar/floating_button.dart';
@@ -10,7 +11,7 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: state.mainPageController.getPage(state.currentPage),
+      body: mainPageController.getPage(state.currentPage, state.onPageChanged),
       floatingActionButton: FloatingButton(
         onPressed: () {},
       ),

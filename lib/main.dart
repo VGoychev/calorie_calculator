@@ -46,19 +46,9 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  late ThemeMode _themeMode;
   @override
   void initState() {
     super.initState();
-    _themeMode =
-        widget.prefsService.getThemeMode() ? ThemeMode.dark : ThemeMode.light;
-  }
-
-  void _toggleTheme() async {
-    final isDark = _themeMode == ThemeMode.dark;
-    final newMode = isDark ? ThemeMode.light : ThemeMode.dark;
-    await widget.prefsService.setThemeMode(!isDark);
-    setState(() => _themeMode = newMode);
   }
 
   @override
@@ -67,7 +57,7 @@ class _MyAppState extends State<MyApp> {
       title: 'Calorie Calculator',
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
-      themeMode: _themeMode,
+      themeMode: ThemeMode.dark,
       routes: {
         '/': (context) => Root(),
         '/login': (context) => Login(),

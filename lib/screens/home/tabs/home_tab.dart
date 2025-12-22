@@ -3,11 +3,16 @@ import 'dart:developer' as developer;
 import 'package:calorie_calculator/models/user.dart';
 import 'package:calorie_calculator/services/auth_service.dart';
 import 'package:calorie_calculator/services/firestore_service.dart';
-import 'package:calorie_calculator/widgets/circle_progress_stack/circle_progress_stack.dart';
+import 'package:calorie_calculator/theme/app_theme.dart';
+import 'package:calorie_calculator/widgets/profile_menu/profile_menu.dart';
+import 'package:calorie_calculator/widgets/progress_card/progress_card.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 class HomeTab extends StatefulWidget {
-  const HomeTab({super.key});
+  final void Function(String page) onPageChanged;
+
+  const HomeTab({super.key, required this.onPageChanged});
 
   @override
   State<StatefulWidget> createState() => _HomeTabState();
@@ -38,136 +43,284 @@ class _HomeTabState extends State<HomeTab> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          SizedBox(
-              height: 120,
-              child: Stack(children: [
-                Positioned(
-                  top: 60,
-                  right: 20,
-                  child: Container(
-                    padding: EdgeInsets.all(6),
-                    alignment: Alignment.bottomRight,
-                    decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.primary,
-                        borderRadius: BorderRadius.circular(30)),
-                    child: Icon(
-                      Icons.person_4_rounded,
-                      color: Colors.white,
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final primaryColor = Theme.of(context).primaryColor;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        SizedBox(height: 120, child: Stack(children: [ProfileMenu()])),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Stack(
+            clipBehavior: Clip.none,
+            children: [
+              Container(
+                height: 100,
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(colors: [
+                    primaryColor,
+                    AppTheme.lighterGreen,
+                  ]),
+                  color: primaryColor,
+                  borderRadius: BorderRadius.all(Radius.circular(30)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: isDark ? Colors.black : Colors.black26,
+                      blurRadius: 6,
+                      offset: Offset(0, 10),
                     ),
-                  ),
+                  ],
                 ),
-              ])),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Stack(
-              clipBehavior: Clip.none,
+              ),
+              Positioned(
+                top: -80,
+                left: 0,
+                width: 180,
+                child: Image.asset(
+                  'assets/images/sammy_jumping.png',
+                ),
+              ),
+            ],
+          ),
+        ),
+        SizedBox(
+          height: 56,
+        ),
+        Expanded(
+          child: SingleChildScrollView(
+            child: Column(
               children: [
-                Container(
-                  height: 100,
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.primary,
-                    border: Border.all(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .primary
-                            .withAlpha(100)),
-                    borderRadius: BorderRadius.all(Radius.circular(30)),
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Colors.black26,
-                        blurRadius: 10,
-                        offset: Offset(0, 10),
-                      ),
-                    ],
-                  ),
+                ProgressCard(onTap: () => widget.onPageChanged('meals')),
+                SizedBox(
+                  height: 32,
                 ),
-                Positioned(
-                  top: -80,
-                  left: 0,
-                  width: 180,
-                  child: Image.asset(
-                    'assets/images/sammy_jumping.png',
+                Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: isDark
+                            ? const [
+                                Color(0xFF1a1a1a),
+                                Color(0xFF121212),
+                              ]
+                            : const [
+                                Color(0xFFfafafa),
+                                Color(0xFFf5f5f5),
+                              ],
+                      ),
+                      borderRadius: BorderRadius.circular(30),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withAlpha(120),
+                          blurRadius: 6,
+                          offset: const Offset(4, 4),
+                        ),
+                        BoxShadow(
+                          color: Theme.of(context).primaryColor.withAlpha(20),
+                          blurRadius: 15,
+                          offset: const Offset(0, -3),
+                          spreadRadius: -5,
+                        ),
+                      ],
+                      border: Border.all(
+                        color: isDark ? primaryColor : AppTheme.lighterGreen,
+                        width: 1.5,
+                      ),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          /// 🔥 CHART (width + height guaranteed)
+                          Expanded(
+                            flex: 3,
+                            child: SizedBox(
+                              height: 150,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: LineChart(
+                                  LineChartData(
+                                    gridData: FlGridData(
+                                      show: true,
+                                      drawVerticalLine: false,
+                                      getDrawingHorizontalLine: (value) =>
+                                          FlLine(
+                                        color: isDark
+                                            ? Colors.white10
+                                            : Colors.black12,
+                                        strokeWidth: 1,
+                                      ),
+                                    ),
+                                    titlesData: FlTitlesData(
+                                      leftTitles: AxisTitles(
+                                        sideTitles: SideTitles(
+                                          showTitles: true,
+                                          reservedSize: 32,
+                                          interval: 2,
+                                          getTitlesWidget: (value, _) => Text(
+                                            value.toInt().toString(),
+                                            style: TextStyle(
+                                              color: isDark
+                                                  ? Colors.white54
+                                                  : Colors.black54,
+                                              fontSize: 10,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      bottomTitles: AxisTitles(
+                                        sideTitles: SideTitles(
+                                          showTitles: true,
+                                          interval: 1,
+                                          reservedSize: 22,
+                                          getTitlesWidget: (value, _) {
+                                            const days = [
+                                              'Mon',
+                                              'Tue',
+                                              'Wed',
+                                              'Thu',
+                                              'Fri',
+                                              'Sat',
+                                              'Sun'
+                                            ];
+                                            return Padding(
+                                              padding:
+                                                  const EdgeInsets.only(top: 4),
+                                              child: Text(
+                                                value.toInt() >= 0 &&
+                                                        value.toInt() <
+                                                            days.length
+                                                    ? days[value.toInt()]
+                                                    : '',
+                                                style: TextStyle(
+                                                  color: isDark
+                                                      ? Colors.white70
+                                                      : Colors.black87,
+                                                  fontSize: 10,
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                      rightTitles: AxisTitles(
+                                          sideTitles:
+                                              SideTitles(showTitles: false)),
+                                      topTitles: AxisTitles(
+                                          sideTitles:
+                                              SideTitles(showTitles: false)),
+                                    ),
+                                    borderData: FlBorderData(
+                                      show: true,
+                                      border: Border(
+                                        left: BorderSide(
+                                          color: isDark
+                                              ? Colors.white24
+                                              : Colors.black26,
+                                        ),
+                                        bottom: BorderSide(
+                                          color: isDark
+                                              ? Colors.white24
+                                              : Colors.black26,
+                                        ),
+                                      ),
+                                    ),
+                                    minX: 0,
+                                    maxX: 6,
+                                    minY: 68,
+                                    maxY: 76,
+                                    lineBarsData: [
+                                      LineChartBarData(
+                                        spots: const [
+                                          FlSpot(0, 75),
+                                          FlSpot(1, 74),
+                                          FlSpot(2, 73.5),
+                                          FlSpot(3, 73),
+                                          FlSpot(4, 71.5),
+                                          FlSpot(5, 70),
+                                          FlSpot(6, 69),
+                                        ],
+                                        isCurved: true,
+                                        barWidth: 3,
+                                        color: Theme.of(context).primaryColor,
+                                        dotData: FlDotData(show: true),
+                                        belowBarData: BarAreaData(
+                                          show: true,
+                                          color: Theme.of(context)
+                                              .primaryColor
+                                              .withOpacity(0.12),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+
+                          const SizedBox(width: 12),
+
+                          /// 📊 TEXT INFO
+                          Expanded(
+                            flex: 2,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Body Weight",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                    color: isDark ? Colors.white : Colors.black,
+                                  ),
+                                ),
+                                const SizedBox(height: 6),
+                                Text(
+                                  "Past Week (kg)",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: isDark
+                                        ? Colors.white70
+                                        : Colors.black54,
+                                  ),
+                                ),
+                                const SizedBox(height: 14),
+                                Text(
+                                  "Last: 69.0 kg",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 13,
+                                    color: Theme.of(context).primaryColor,
+                                  ),
+                                ),
+                                const SizedBox(height: 6),
+                                Text(
+                                  "Start: 75.0 kg",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: isDark
+                                        ? Colors.grey[400]
+                                        : Colors.grey[700],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
               ],
             ),
           ),
-          SizedBox(
-            height: 50,
-          ),
-          Padding(
-            padding: EdgeInsetsGeometry.all(8),
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.primary,
-                  borderRadius: BorderRadius.all(Radius.circular(30))),
-              child: Padding(
-                  padding: const EdgeInsets.fromLTRB(12, 6, 12, 6),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      CircleProgressStack(),
-                      SizedBox(width: 8),
-                      Expanded(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            _buildNutrientRow(Color.fromARGB(255, 64, 17, 250),
-                                'Calories', '1,200/1800 kcal'),
-                            SizedBox(height: 8),
-                            _buildNutrientRow(
-                                Color.fromARGB(255, 179, 108, 165), 'Proteins', '80/120 g'),
-                            SizedBox(height: 8),
-                            _buildNutrientRow(
-                                Color.fromARGB(255, 255, 136, 0), 'Carbohydrates', '150/210 g'),
-                            SizedBox(height: 8),
-                            _buildNutrientRow(Colors.green, 'Fats', '60/88 g'),
-                          ],
-                        ),
-                      )
-                    ],
-                  )),
-            ),
-          )
-        ],
-      ),
-    );
-  }
-
-  Widget _buildNutrientRow(Color color, String label, String value) {
-    return Row(
-      children: [
-        Container(
-          width: 12,
-          height: 12,
-          decoration: BoxDecoration(
-            color: color,
-            shape: BoxShape.circle,
-          ),
-        ),
-        SizedBox(width: 12),
-        Expanded(
-          child: Text(
-            label,
-            style: TextStyle(
-                fontSize: 14, fontWeight: FontWeight.w600, color: color),
-          ),
-        ),
-        Text(
-          value,
-          style: TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w600,
-            color: Colors.white,
-          ),
-        ),
+        )
       ],
     );
   }

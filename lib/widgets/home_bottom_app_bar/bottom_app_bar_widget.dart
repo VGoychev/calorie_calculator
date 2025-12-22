@@ -24,10 +24,12 @@ class _BottomAppBarWidgetState extends State<BottomAppBarWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         border: Border(
           top: BorderSide(
-            color: Colors.black12,
+            color: Theme.of(context).brightness == Brightness.light
+                ? Colors.black12
+                : const Color.fromARGB(95, 52, 52, 52),
             width: 1,
           ),
         ),
