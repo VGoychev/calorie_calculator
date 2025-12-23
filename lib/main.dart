@@ -57,7 +57,7 @@ class _MyAppState extends State<MyApp> {
       title: 'Calorie Calculator',
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
-      themeMode: ThemeMode.dark,
+      themeMode: ThemeMode.light,
       routes: {
         '/': (context) => Root(),
         '/login': (context) => Login(),

@@ -1,4 +1,5 @@
 import 'package:calorie_calculator/screens/home/tabs/home_tab.dart';
+import 'package:calorie_calculator/screens/home/tabs/meals_tab.dart';
 import 'package:flutter/material.dart';
 
 final MainPageController mainPageController = MainPageController();
@@ -11,7 +12,7 @@ class MainPageController {
       case 'logs':
         return const Center(child: Text('Logs'));
       case 'meals':
-        return const Center(child: Text('Meals'));
+        return MealsTab();
       case 'profile':
         return const Center(child: Text('Profile'));
       default:

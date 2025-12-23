@@ -144,4 +144,41 @@ class AppTheme {
   static Color purple = Color.fromARGB(255, 155, 81, 224);
   static Color blue = Color.fromARGB(255, 47, 129, 237);
   static Color lighterGreen = Color.fromARGB(255, 126, 218, 144);
+
+  static BoxDecoration homeContainerDecoration(BuildContext context) =>
+      BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: Theme.of(context).brightness == Brightness.dark
+              ? const [
+                  Color(0xFF1a1a1a),
+                  Color(0xFF121212),
+                ]
+              : const [
+                  Color(0xFFfafafa),
+                  Color(0xFFf5f5f5),
+                ],
+        ),
+        borderRadius: BorderRadius.circular(30),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withAlpha(120),
+            blurRadius: 6,
+            offset: const Offset(4, 4),
+          ),
+          BoxShadow(
+            color: Theme.of(context).primaryColor.withAlpha(20),
+            blurRadius: 15,
+            offset: const Offset(0, -3),
+            spreadRadius: -5,
+          ),
+        ],
+        border: Border.all(
+          color: Theme.of(context).brightness == Brightness.dark
+              ? Theme.of(context).colorScheme.primary
+              : AppTheme.lighterGreen,
+          width: 1.5,
+        ),
+      );
 }
