@@ -107,13 +107,13 @@ class _HomeTabState extends State<HomeTab> {
                 color: Theme.of(context).scaffoldBackgroundColor,
                 border: Border(
                   bottom: BorderSide(
-                      color: isDark ? Colors.white24 : Colors.black12,
+                      color: isDark ? Colors.white10 : Colors.black12,
                       width: 0.5),
                   right: BorderSide(
-                      color: isDark ? Colors.white24 : Colors.black12,
+                      color: isDark ? Colors.white10 : Colors.black12,
                       width: 0.5),
                   left: BorderSide(
-                      color: isDark ? Colors.white24 : Colors.black12,
+                      color: isDark ? Colors.white10 : Colors.black12,
                       width: 0.5),
                 ),
                 borderRadius: BorderRadius.only(
@@ -121,27 +121,41 @@ class _HomeTabState extends State<HomeTab> {
                     bottomRight: Radius.circular(30)),
                 boxShadow: [
                   BoxShadow(
-                      color: Colors.black26,
-                      offset: Offset(0, 8),
-                      blurRadius: 12,
+                      color: Colors.black12,
+                      offset: Offset(0, 14),
+                      blurRadius: 14,
                       spreadRadius: 0)
                 ]),
           ),
         ),
         Positioned(
-          top: 130,
-          left: 10,
-          child: Container(
+            top: 130,
+            left: 10,
+            child: Container(
               height: 100,
               width: MediaQuery.of(context).size.width - 20,
-              decoration: AppTheme.homeContainerDecoration(context)),
-        ),
+              decoration: AppTheme.homeContainerDecoration(context),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Text(
+                    '"Take care of your body.\nIt’s the only place you have to live."',
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                          fontStyle: FontStyle.italic,
+                          fontWeight: FontWeight.w600,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                    textAlign: TextAlign.center,
+                  )
+                ],
+              ),
+            )),
         Positioned(
           top: 40,
           left: 0,
           width: 180,
           child: Image.asset(
-            'assets/images/sammy_jumping.png',
+            'assets/images/sammy/sammy_jumping.png',
           ),
         ),
       ],

@@ -1,7 +1,7 @@
 name: calorie_calculator
 description: "A new Flutter project."
 
-publish_to: 'none' 
+publish_to: "none"
 
 version: 1.0.0+1
 
@@ -26,7 +26,8 @@ dependencies:
   wheel_picker: ^0.2.2
   fl_chart: ^1.1.1
   cupertino_icons: ^1.0.8
-
+  http: ^1.6.0
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -36,10 +37,10 @@ dev_dependencies:
   flutter_lints: ^4.0.0
 
 flutter:
-
   uses-material-design: true
   assets:
     - assets/images/
+    - assets/images/sammy/
     - assets/icons/
     - assets/animations/
 
@@ -59,4 +60,3 @@ flutter:
   #       - asset: fonts/TrajanPro.ttf
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
-

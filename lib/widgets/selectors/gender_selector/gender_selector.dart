@@ -45,7 +45,6 @@ class _GenderSelectorState extends State<GenderSelector> {
       children: [
         _buildGenderButton('Male'),
         _buildGenderButton('Female'),
-        _buildGenderButton('Other'),
       ],
     );
   }
