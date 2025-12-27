@@ -1,6 +1,6 @@
 class AddedMealItem {
   final String name;
-  final int grams;
+  final int quantity;
   final int calories;
   final int proteins;
   final int fats;
@@ -8,7 +8,7 @@ class AddedMealItem {
 
   AddedMealItem({
     required this.name,
-    required this.grams,
+    required this.quantity,
     required this.calories,
     required this.proteins,
     required this.fats,

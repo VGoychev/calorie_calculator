@@ -37,7 +37,7 @@ class _MealsTabState extends State<MealsTab> {
                 meals: [
                   AddedMealItem(
                     name: 'Oatmeal with Berries',
-                    grams: 250,
+                    quantity: 250,
                     calories: 320,
                     proteins: 12,
                     fats: 8,
@@ -45,7 +45,7 @@ class _MealsTabState extends State<MealsTab> {
                   ),
                   AddedMealItem(
                     name: 'Greek Yogurt',
-                    grams: 150,
+                    quantity: 150,
                     calories: 180,
                     proteins: 15,
                     fats: 6,
@@ -63,7 +63,7 @@ class _MealsTabState extends State<MealsTab> {
                 meals: [
                   AddedMealItem(
                     name: 'Grilled Chicken Salad',
-                    grams: 350,
+                    quantity: 350,
                     calories: 420,
                     proteins: 38,
                     fats: 18,
@@ -71,7 +71,7 @@ class _MealsTabState extends State<MealsTab> {
                   ),
                   AddedMealItem(
                     name: 'Whole Grain Bread',
-                    grams: 60,
+                    quantity: 60,
                     calories: 160,
                     proteins: 6,
                     fats: 2,
@@ -89,7 +89,7 @@ class _MealsTabState extends State<MealsTab> {
                 meals: [
                   AddedMealItem(
                     name: 'Salmon with Vegetables',
-                    grams: 280,
+                    quantity: 280,
                     calories: 380,
                     proteins: 32,
                     fats: 22,

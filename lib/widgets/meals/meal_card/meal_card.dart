@@ -60,7 +60,7 @@ class MealCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Text(
-                    '${mealItem.grams}g',
+                    '${mealItem.quantity}g',
                     style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w600,

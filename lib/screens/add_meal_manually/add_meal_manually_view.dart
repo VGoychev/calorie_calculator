@@ -29,7 +29,7 @@ class AddMealManuallyView extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              'Enter details about your meal (e.g., "200g grilled chicken breast with 100g brown rice")',
+              'e.g., "I had 200g grilled chicken breast with 100g brown rice"',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: isDark ? Colors.grey[400] : Colors.grey[600],
                   ),
@@ -37,7 +37,7 @@ class AddMealManuallyView extends StatelessWidget {
             const SizedBox(height: 24),
             TextField(
               controller: state.textController,
-              maxLines: 5,
+              maxLines: 1,
               decoration: InputDecoration(
                 hintText: 'Enter meal description...',
                 border: OutlineInputBorder(

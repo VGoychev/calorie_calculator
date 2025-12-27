@@ -1,4 +1,7 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:cloud_firestore/cloud_firestore.dart';
+
+import 'package:calorie_calculator/models/food_item.dart';
 
 class User {
   final String uid;
@@ -11,6 +14,8 @@ class User {
   final double activityLevel;
   final int age;
 
+  List<FoodItem> foodList;
+
   User({
     required this.uid,
     required this.email,
@@ -21,21 +26,22 @@ class User {
     required this.weight,
     required this.activityLevel,
     required this.age,
+    required this.foodList,
   });
 
 // Firestore -> User
   factory User.fromMap(Map<String, dynamic> map) {
     return User(
-      uid: map['uid'] ?? '',
-      email: map['email'],
-      name: map['name'],
-      createdAt: (map['createdAt'] as Timestamp).toDate(),
-      gender: map['gender'] ?? '',
-      height: (map['height'] ?? 0).toDouble(),
-      weight: (map['weight'] ?? 0).toDouble(),
-      activityLevel: (map['activity_level'] ?? 0).toDouble(),
-      age: (map['age'] ?? 0).toInt(),
-    );
+        uid: map['uid'] ?? '',
+        email: map['email'],
+        name: map['name'],
+        createdAt: (map['createdAt'] as Timestamp).toDate(),
+        gender: map['gender'] ?? '',
+        height: (map['height'] ?? 0).toDouble(),
+        weight: (map['weight'] ?? 0).toDouble(),
+        activityLevel: (map['activity_level'] ?? 0).toDouble(),
+        age: (map['age'] ?? 0).toInt(),
+        foodList: (map['foodList'] ?? []));
   }
 
 // User -> Firestore
@@ -50,6 +56,7 @@ class User {
       'weight': weight,
       'activity_level': activityLevel,
       'age': age,
+      'foodList': foodList
     };
   }
 
@@ -108,20 +115,21 @@ class User {
       'weight': weight,
       'activity_level': activityLevel,
       'age': age,
+      'foodList': foodList
     };
   }
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-      uid: json['uid'] ?? '',
-      email: json['email'],
-      name: json['name'],
-      createdAt: DateTime.tryParse(json['createdAt'] ?? '') ?? DateTime.now(),
-      gender: json['gender'] ?? '',
-      height: (json['height'] ?? 0).toDouble(),
-      weight: (json['weight'] ?? 0).toDouble(),
-      activityLevel: (json['activity_level'] ?? 0).toDouble(),
-      age: (json['age'] ?? 0).toInt(),
-    );
+        uid: json['uid'] ?? '',
+        email: json['email'],
+        name: json['name'],
+        createdAt: DateTime.tryParse(json['createdAt'] ?? '') ?? DateTime.now(),
+        gender: json['gender'] ?? '',
+        height: (json['height'] ?? 0).toDouble(),
+        weight: (json['weight'] ?? 0).toDouble(),
+        activityLevel: (json['activity_level'] ?? 0).toDouble(),
+        age: (json['age'] ?? 0).toInt(),
+        foodList: (json['foodList'] ?? []));
   }
 }
