@@ -1,9 +1,10 @@
 import 'package:calorie_calculator/models/added_meal_item.dart';
 import 'package:calorie_calculator/models/food_item.dart';
-import 'package:calorie_calculator/models/macro_result.dart';
+import 'package:calorie_calculator/models/parsed_food.dart';
 import 'package:calorie_calculator/screens/add_meal_manually/add_meal_manually_view.dart';
 import 'package:calorie_calculator/services/ai_analyze_service.dart';
 import 'package:calorie_calculator/services/firestore_service.dart';
+import 'package:calorie_calculator/utils/helpers/text_helper.dart';
 import 'package:calorie_calculator/widgets/loading_dialog/loading_dialog.dart';
 import 'package:flutter/material.dart';
 
@@ -40,19 +41,13 @@ class AddMealManuallyState extends State<AddMealManually> {
     LoadingDialog.show(context);
 
     try {
-      final mealItems = await _aiAnalyzeService.analyzeText(text);
+      final mealItems = await analyzeMealFirestoreFirst(text);
 
-      if (mealItems == null || mealItems.isEmpty) {
-        if (!mounted) return;
-        LoadingDialog.close(context);
-        return;
-      }
-
-      final convertedMeals = await _convertMeals(mealItems);
+      // final convertedMeals = await _convertMeals(mealItems);
 
       if (!mounted) return;
       setState(() {
-        analyzedMeals = convertedMeals;
+        analyzedMeals = mealItems;
       });
 
       LoadingDialog.close(context);
@@ -68,35 +63,73 @@ class AddMealManuallyState extends State<AddMealManually> {
     }
   }
 
+  Future<List<AddedMealItem>> analyzeMealFirestoreFirst(
+    String input,
+  ) async {
+    final parsedFoods = TextHelper.parseTextLocally(input);
+    final List<AddedMealItem> result = [];
+    final List<ParsedFood> missingFoods = [];
+
+    for (final parsed in parsedFoods) {
+      final food = await firestoreService.getFoodItemByPartialName(parsed.name);
+
+      if (food == null) {
+        missingFoods.add(parsed);
+        continue;
+      }
+
+      final resolvedQty = _resolveQuantity(parsed, food);
+
+      result.add(
+        _toAddedMealItem(food, resolvedQty),
+      );
+    }
+
+    if (missingFoods.isNotEmpty) {
+      final aiItems = await _aiAnalyzeService.analyzeText(
+        missingFoods.map((e) => '${e.quantity}${e.unit} ${e.name}').join(', '),
+      );
+
+      if (aiItems != null) {
+        for (final aiFood in aiItems) {
+          await firestoreService.addFoodItem(aiFood);
+          result.add(
+            _toAddedMealItem(
+              aiFood,
+              aiFood.exampleQuantity,
+            ),
+          );
+        }
+      }
+    }
+
+    return result;
+  }
+
+  int _resolveQuantity(ParsedFood parsed, FoodItem food) {
+    if (parsed.unit == 'g' || parsed.unit == 'ml') {
+      return parsed.quantity;
+    }
+
+    return parsed.quantity * food.exampleQuantity;
+  }
+
+  AddedMealItem _toAddedMealItem(FoodItem food, int quantity) {
+    return AddedMealItem(
+      name: food.name,
+      quantity: quantity,
+      calories: (food.caloriesPer100 * quantity / 100).round(),
+      proteins: (food.proteinPer100 * quantity / 100).round(),
+      carbs: (food.carbsPer100 * quantity / 100).round(),
+      fats: (food.fatsPer100 * quantity / 100).round(),
+    );
+  }
+
   void resetAndAnalyzeAgain() {
     setState(() {
       analyzedMeals = null;
       textController.clear();
     });
-  }
-
-  Future<List<AddedMealItem>> _convertMeals(List<FoodItem> foodItems) async {
-    return foodItems.map((foodItem) {
-      final macroResult = calculateForExampleQuantity(foodItem);
-
-      _addFoodItemToFirebase(foodItem);
-
-      return AddedMealItem(
-        name: foodItem.name,
-        quantity: foodItem.exampleQuantity,
-        calories: macroResult.calories.round(),
-        proteins: macroResult.protein.round(),
-        fats: macroResult.fats.round(),
-        carbs: macroResult.carbs.round(),
-      );
-    }).toList();
-  }
-
-  void _addFoodItemToFirebase(FoodItem foodItem) async {
-    FoodItem? item = await firestoreService.getFoodItemByName(foodItem.name);
-    if (item == null) {
-      await firestoreService.addFoodItem(foodItem);
-    }
   }
 
   @override

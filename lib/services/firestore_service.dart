@@ -2,6 +2,7 @@ import 'dart:developer' as developer;
 
 import 'package:calorie_calculator/models/food_item.dart';
 import 'package:calorie_calculator/models/user.dart';
+import 'package:calorie_calculator/utils/helpers/text_helper.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 final FirestoreService firestoreService = FirestoreService();
@@ -102,7 +103,39 @@ class FirestoreService {
   }
 
   Future<FoodItem?> getFoodItemByPartialName(String name) async {
-    // TODO: partial name search
-    return null;
+    try {
+      final normalizedInput = TextHelper.normalizeFoodName(name);
+      final inputWords =
+          normalizedInput.split(' ').map(TextHelper.singularize).toSet();
+
+      final snapshot = await _firestore.collection('food_items').get();
+
+      FoodItem? bestMatch;
+      int bestWordCount = 0;
+
+      for (final doc in snapshot.docs) {
+        final data = doc.data();
+        final foodName = TextHelper.normalizeFoodName(data['name'] as String);
+
+        final foodWords =
+            foodName.split(' ').map(TextHelper.singularize).toSet();
+
+        if (!inputWords.containsAll(foodWords)) continue;
+
+        if (foodWords.length > bestWordCount) {
+          bestWordCount = foodWords.length;
+          bestMatch = FoodItem.fromMap(data);
+        }
+      }
+
+      return bestMatch;
+    } catch (e, stackTrace) {
+      developer.log(
+        'Error in getFoodItemByPartialName',
+        error: e,
+        stackTrace: stackTrace,
+      );
+      return null;
+    }
   }
 }
