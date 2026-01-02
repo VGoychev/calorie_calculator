@@ -1,8 +1,9 @@
-import 'package:calorie_calculator/models/added_meal_item.dart';
 import 'package:calorie_calculator/models/food_item.dart';
 import 'package:calorie_calculator/models/parsed_food.dart';
+import 'package:calorie_calculator/models/user_meal_entry.dart';
 import 'package:calorie_calculator/screens/add_meal_manually/add_meal_manually_view.dart';
 import 'package:calorie_calculator/services/ai_analyze_service.dart';
+import 'package:calorie_calculator/services/auth_service.dart';
 import 'package:calorie_calculator/services/firestore_service.dart';
 import 'package:calorie_calculator/utils/helpers/text_helper.dart';
 import 'package:calorie_calculator/widgets/loading_dialog/loading_dialog.dart';
@@ -18,7 +19,8 @@ class AddMealManually extends StatefulWidget {
 class AddMealManuallyState extends State<AddMealManually> {
   final TextEditingController textController = TextEditingController();
   final AiAnalyzeService _aiAnalyzeService = AiAnalyzeService();
-  List<AddedMealItem>? analyzedMeals;
+  List<Map<String, dynamic>>? analyzedMeals; 
+  String selectedMealType = 'breakfast'; 
 
   @override
   void dispose() {
@@ -63,11 +65,11 @@ class AddMealManuallyState extends State<AddMealManually> {
     }
   }
 
-  Future<List<AddedMealItem>> analyzeMealFirestoreFirst(
+  Future<List<Map<String, dynamic>>> analyzeMealFirestoreFirst(
     String input,
   ) async {
     final parsedFoods = TextHelper.parseTextLocally(input);
-    final List<AddedMealItem> result = [];
+    final List<Map<String, dynamic>> result = [];
     final List<ParsedFood> missingFoods = [];
 
     for (final parsed in parsedFoods) {
@@ -80,9 +82,10 @@ class AddMealManuallyState extends State<AddMealManually> {
 
       final resolvedQty = _resolveQuantity(parsed, food);
 
-      result.add(
-        _toAddedMealItem(food, resolvedQty),
-      );
+      result.add({
+        'foodItem': food,
+        'quantity': resolvedQty,
+      });
     }
 
     if (missingFoods.isNotEmpty) {
@@ -93,12 +96,10 @@ class AddMealManuallyState extends State<AddMealManually> {
       if (aiItems != null) {
         for (final aiFood in aiItems) {
           await firestoreService.addFoodItem(aiFood);
-          result.add(
-            _toAddedMealItem(
-              aiFood,
-              aiFood.exampleQuantity,
-            ),
-          );
+          result.add({
+            'foodItem': aiFood,
+            'quantity': aiFood.exampleQuantity,
+          });
         }
       }
     }
@@ -114,22 +115,76 @@ class AddMealManuallyState extends State<AddMealManually> {
     return parsed.quantity * food.exampleQuantity;
   }
 
-  AddedMealItem _toAddedMealItem(FoodItem food, int quantity) {
-    return AddedMealItem(
-      name: food.name,
-      quantity: quantity,
-      calories: (food.caloriesPer100 * quantity / 100).round(),
-      proteins: (food.proteinPer100 * quantity / 100).round(),
-      carbs: (food.carbsPer100 * quantity / 100).round(),
-      fats: (food.fatsPer100 * quantity / 100).round(),
-    );
-  }
 
   void resetAndAnalyzeAgain() {
     setState(() {
       analyzedMeals = null;
       textController.clear();
     });
+  }
+
+  void updateMealType(String mealType) {
+    setState(() {
+      selectedMealType = mealType;
+    });
+  }
+
+  Future<void> confirmAndAddMeals(BuildContext context) async {
+    if (analyzedMeals == null || analyzedMeals!.isEmpty) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('No meals to add')),
+        );
+      }
+      return;
+    }
+
+    if (!mounted) return;
+    LoadingDialog.show(context);
+
+    try {
+      final uid = await authService.getCurrentUserId();
+      if (uid.isEmpty) {
+        if (mounted) {
+          LoadingDialog.close(context);
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Please log in to add meals')),
+          );
+        }
+        return;
+      }
+
+      final mealEntries = analyzedMeals!.map((meal) {
+        final foodItem = meal['foodItem'] as FoodItem;
+        final quantity = meal['quantity'] as int;
+        return UserMealEntry.fromFoodItem(
+          foodItem: foodItem,
+          quantity: quantity,
+        );
+      }).toList();
+
+      await firestoreService.addMeals(
+        uid: uid,
+        date: DateTime.now(),
+        mealType: selectedMealType,
+        meals: mealEntries,
+      );
+
+      if (!mounted) return;
+      LoadingDialog.close(context);
+
+      Navigator.of(context).pop(true);
+    } catch (e) {
+      if (mounted) {
+        LoadingDialog.close(context);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error adding meals: ${e.toString()}'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
   }
 
   @override

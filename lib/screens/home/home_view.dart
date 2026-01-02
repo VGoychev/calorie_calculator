@@ -1,4 +1,3 @@
-import 'package:calorie_calculator/models/added_meal_item.dart';
 import 'package:calorie_calculator/screens/add_meal_manually/add_meal_manually.dart';
 import 'package:calorie_calculator/screens/home/controller/main_page_controller.dart';
 import 'package:calorie_calculator/screens/home/home.dart';
@@ -20,20 +19,15 @@ class HomeView extends StatelessWidget {
           AddMealBottomSheet.show(
             context,
             onAddManually: () async {
-              final result = await Navigator.push<AddedMealItem>(
+              final result = await Navigator.push<bool>(
                 context,
                 MaterialPageRoute(
                   builder: (context) => const AddMealManually(),
                 ),
               );
 
-              if (result != null && context.mounted) {
-                // TODO: Handle the added meal item (save to database, update UI, etc.)
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text('${result.name} added successfully!'),
-                  ),
-                );
+              if (result == true && context.mounted) {
+                mainPageController.refreshMealsTab();
               }
             },
             onTakePhoto: () {},

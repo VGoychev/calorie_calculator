@@ -1,7 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import 'package:calorie_calculator/models/food_item.dart';
-
 class User {
   final String uid;
   final String? email;
@@ -13,8 +11,6 @@ class User {
   final double activityLevel;
   final int age;
 
-  List<FoodItem> foodList;
-
   User({
     required this.uid,
     required this.email,
@@ -25,7 +21,6 @@ class User {
     required this.weight,
     required this.activityLevel,
     required this.age,
-    required this.foodList,
   });
 
 // Firestore -> User
@@ -39,8 +34,7 @@ class User {
         height: (map['height'] ?? 0).toDouble(),
         weight: (map['weight'] ?? 0).toDouble(),
         activityLevel: (map['activity_level'] ?? 0).toDouble(),
-        age: (map['age'] ?? 0).toInt(),
-        foodList: (map['foodList'] ?? []));
+        age: (map['age'] ?? 0).toInt());
   }
 
 // User -> Firestore
@@ -54,8 +48,7 @@ class User {
       'height': height,
       'weight': weight,
       'activity_level': activityLevel,
-      'age': age,
-      'foodList': foodList
+      'age': age
     };
   }
 
@@ -113,8 +106,7 @@ class User {
       'height': height,
       'weight': weight,
       'activity_level': activityLevel,
-      'age': age,
-      'foodList': foodList
+      'age': age
     };
   }
 
@@ -128,7 +120,6 @@ class User {
         height: (json['height'] ?? 0).toDouble(),
         weight: (json['weight'] ?? 0).toDouble(),
         activityLevel: (json['activity_level'] ?? 0).toDouble(),
-        age: (json['age'] ?? 0).toInt(),
-        foodList: (json['foodList'] ?? []));
+        age: (json['age'] ?? 0).toInt());
   }
 }

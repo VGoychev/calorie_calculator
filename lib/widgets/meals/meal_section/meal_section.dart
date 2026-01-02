@@ -1,11 +1,11 @@
-import 'package:calorie_calculator/models/added_meal_item.dart';
+import 'package:calorie_calculator/models/user_meal_entry.dart';
 import 'package:calorie_calculator/widgets/meals/meal_card/meal_card.dart';
 import 'package:flutter/material.dart';
 
 class MealSection extends StatelessWidget {
   final String title;
   final IconData icon;
-  final List<AddedMealItem> meals;
+  final List<UserMealEntry> meals;
 
   const MealSection(
       {super.key,
@@ -41,7 +41,7 @@ class MealSection extends StatelessWidget {
 
         // Meal Items
         ...meals.map((meal) => MealCard(
-              mealItem: meal,
+              mealEntry: meal,
             )),
       ],
     );

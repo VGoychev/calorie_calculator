@@ -1,11 +1,14 @@
-import 'package:calorie_calculator/models/added_meal_item.dart';
+import 'package:calorie_calculator/models/user_meal_entry.dart';
 import 'package:calorie_calculator/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 
 class MealCard extends StatelessWidget {
-  final AddedMealItem mealItem;
+  final UserMealEntry mealEntry;
 
-  const MealCard({super.key, required this.mealItem});
+  const MealCard({
+    super.key,
+    required this.mealEntry,
+  });
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
@@ -45,7 +48,7 @@ class MealCard extends StatelessWidget {
               children: [
                 Expanded(
                   child: Text(
-                    mealItem.name,
+                    mealEntry.name,
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
@@ -60,7 +63,7 @@ class MealCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Text(
-                    '${mealItem.quantity}g',
+                    '${mealEntry.quantity}g',
                     style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
@@ -78,25 +81,25 @@ class MealCard extends StatelessWidget {
                 _buildNutrientChip(
                   context,
                   AppTheme.red,
-                  '${mealItem.calories} kcal',
+                  '${(mealEntry.caloriesPer100 * mealEntry.quantity / 100).round()} kcal',
                 ),
                 SizedBox(width: 8),
                 _buildNutrientChip(
                   context,
                   AppTheme.blue,
-                  'P: ${mealItem.proteins}g',
+                  'P: ${(mealEntry.proteinPer100 * mealEntry.quantity / 100).round()}g',
                 ),
                 SizedBox(width: 8),
                 _buildNutrientChip(
                   context,
                   Colors.green,
-                  'C: ${mealItem.carbs}g',
+                  'C: ${(mealEntry.carbsPer100 * mealEntry.quantity / 100).round()}g',
                 ),
                 SizedBox(width: 8),
                 _buildNutrientChip(
                   context,
                   AppTheme.purple,
-                  'F: ${mealItem.fats}g',
+                  'F: ${(mealEntry.fatsPer100 * mealEntry.quantity / 100).round()}g',
                 ),
               ],
             ),

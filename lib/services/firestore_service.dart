@@ -2,6 +2,7 @@ import 'dart:developer' as developer;
 
 import 'package:calorie_calculator/models/food_item.dart';
 import 'package:calorie_calculator/models/user.dart';
+import 'package:calorie_calculator/models/user_meal_entry.dart';
 import 'package:calorie_calculator/utils/helpers/text_helper.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -24,16 +25,16 @@ class FirestoreService {
       final userDoc = _firestore.collection('users').doc(uid);
 
       final user = User(
-          uid: uid,
-          name: name?.trim(),
-          email: email?.trim(),
-          createdAt: createdAt.toDate(),
-          gender: '',
-          height: 0,
-          weight: 0,
-          activityLevel: 0,
-          age: 0,
-          foodList: []);
+        uid: uid,
+        name: name?.trim(),
+        email: email?.trim(),
+        createdAt: createdAt.toDate(),
+        gender: '',
+        height: 0,
+        weight: 0,
+        activityLevel: 0,
+        age: 0,
+      );
 
       await userDoc.set(user.toMap());
     } catch (e) {
@@ -136,6 +137,150 @@ class FirestoreService {
         stackTrace: stackTrace,
       );
       return null;
+    }
+  }
+
+  //
+  // MEALS firestore methods
+  //
+
+  String _getDateString(DateTime date) {
+    return '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
+  }
+
+  /// Add meals to a specific meal type for a specific date
+  Future<void> addMeals({
+    required String uid,
+    required DateTime date,
+    required String mealType,
+    required List<UserMealEntry> meals,
+  }) async {
+    try {
+      final dateString = _getDateString(date);
+      final path = 'users/$uid/meals/$dateString/$mealType';
+      developer.log('Adding ${meals.length} meals to path: $path');
+      developer.log('Date string: $dateString, Meal type: $mealType');
+
+      final mealsRef = _firestore
+          .collection('users')
+          .doc(uid)
+          .collection('meals')
+          .doc(dateString)
+          .collection(mealType);
+
+      for (final meal in meals) {
+        final mealMap = meal.toMap();
+        developer.log('Adding meal: ${meal.name}, quantity: ${meal.quantity}');
+        developer.log('Meal map keys: ${mealMap.keys}');
+        await mealsRef.add(mealMap);
+      }
+
+      developer.log('Successfully added ${meals.length} meals to $mealType');
+    } catch (e, stackTrace) {
+      developer.log(
+        'Error adding meals',
+        name: 'FirestoreService',
+        error: e,
+        stackTrace: stackTrace,
+      );
+    }
+  }
+
+  /// Get meals for a specific meal type and date
+  Future<List<UserMealEntry>> getMeals({
+    required String uid,
+    required DateTime date,
+    required String mealType,
+  }) async {
+    try {
+      final dateString = _getDateString(date);
+      final path = 'users/$uid/meals/$dateString/$mealType';
+      developer.log('Getting meals from path: $path');
+
+      final snapshot = await _firestore
+          .collection('users')
+          .doc(uid)
+          .collection('meals')
+          .doc(dateString)
+          .collection(mealType)
+          .get();
+
+      developer.log(
+          'Found ${snapshot.docs.length} documents in $mealType for date $dateString');
+
+      final meals = snapshot.docs
+          .map((doc) {
+            try {
+              final data = doc.data();
+              developer.log('Document data: ${data.keys}');
+              return UserMealEntry.fromMap(data);
+            } catch (e) {
+              developer.log('Error parsing document ${doc.id}: $e');
+              return null;
+            }
+          })
+          .whereType<UserMealEntry>()
+          .toList();
+
+      developer.log('Successfully parsed ${meals.length} meals');
+      return meals;
+    } catch (e, stackTrace) {
+      developer.log(
+        'Error getting meals',
+        name: 'FirestoreService',
+        error: e,
+        stackTrace: stackTrace,
+      );
+      return [];
+    }
+  }
+
+  /// Get all meals for a specific date (all meal types)
+  Future<Map<String, List<UserMealEntry>>> getAllMealsForDate({
+    required String uid,
+    required DateTime date,
+  }) async {
+    try {
+      final dateString = _getDateString(date);
+      developer.log('Getting all meals for date: $dateString, uid: $uid');
+
+      final allMealsDocs = await _firestore
+          .collection('users')
+          .doc(uid)
+          .collection('meals')
+          .get();
+      developer
+          .log('Total meals documents for user: ${allMealsDocs.docs.length}');
+      if (allMealsDocs.docs.isNotEmpty) {
+        developer.log(
+            'Available date documents: ${allMealsDocs.docs.map((d) => d.id).toList()}');
+      }
+
+      final breakfast =
+          await getMeals(uid: uid, date: date, mealType: 'breakfast');
+      final lunch = await getMeals(uid: uid, date: date, mealType: 'lunch');
+      final dinner = await getMeals(uid: uid, date: date, mealType: 'dinner');
+
+      developer.log(
+          'Total meals retrieved - Breakfast: ${breakfast.length}, Lunch: ${lunch.length}, Dinner: ${dinner.length}');
+
+      return {
+        'breakfast': breakfast,
+        'lunch': lunch,
+        'dinner': dinner,
+      };
+    } catch (e, stackTrace) {
+      developer.log(
+        'Error getting all meals for date',
+        name: 'FirestoreService',
+        error: e,
+        stackTrace: stackTrace,
+      );
+      return {
+        'breakfast': [],
+        'lunch': [],
+        'dinner': [],
+      };
     }
   }
 }

@@ -1,3 +1,4 @@
+import 'package:calorie_calculator/models/user_meal_entry.dart';
 import 'package:calorie_calculator/screens/add_meal_manually/add_meal_manually.dart';
 import 'package:calorie_calculator/widgets/meals/meal_card/meal_card.dart';
 import 'package:flutter/material.dart';
@@ -51,6 +52,53 @@ class AddMealManuallyView extends StatelessWidget {
                 fontWeight: FontWeight.w500,
               ),
             ),
+            const SizedBox(height: 16),
+            Text(
+              'Meal Type',
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
+            ),
+            const SizedBox(height: 8),
+            Row(
+              children: [
+                Expanded(
+                  child: _MealTypeChip(
+                    label: 'Breakfast',
+                    icon: Icons.wb_sunny_outlined,
+                    value: 'breakfast',
+                    selectedValue: state.selectedMealType,
+                    onSelected: (value) {
+                      state.updateMealType(value);
+                    },
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: _MealTypeChip(
+                    label: 'Lunch',
+                    icon: Icons.lunch_dining_outlined,
+                    value: 'lunch',
+                    selectedValue: state.selectedMealType,
+                    onSelected: (value) {
+                      state.updateMealType(value);
+                    },
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: _MealTypeChip(
+                    label: 'Dinner',
+                    icon: Icons.dinner_dining_outlined,
+                    value: 'dinner',
+                    selectedValue: state.selectedMealType,
+                    onSelected: (value) {
+                      state.updateMealType(value);
+                    },
+                  ),
+                ),
+              ],
+            ),
             const SizedBox(height: 24),
             ElevatedButton(
               onPressed: state.analyzedMeals == null ? state.analyzeMeal : null,
@@ -83,15 +131,23 @@ class AddMealManuallyView extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               ...state.analyzedMeals!.map(
-                (meal) => Padding(
-                  padding: const EdgeInsets.only(bottom: 12),
-                  child: MealCard(mealItem: meal),
-                ),
+                (meal) {
+                  final foodItem = meal['foodItem'];
+                  final quantity = meal['quantity'];
+                  final tempEntry = UserMealEntry.fromFoodItem(
+                    foodItem: foodItem,
+                    quantity: quantity,
+                  );
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 12),
+                    child: MealCard(mealEntry: tempEntry),
+                  );
+                },
               ),
               const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.of(context).pop(state.analyzedMeals);
+                  state.confirmAndAddMeals(context);
                 },
                 style: Theme.of(context).elevatedButtonTheme.style?.copyWith(
                       backgroundColor: MaterialStateProperty.all(
@@ -135,6 +191,77 @@ class AddMealManuallyView extends StatelessWidget {
                 ),
               ),
             ],
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _MealTypeChip extends StatelessWidget {
+  final String label;
+  final IconData icon;
+  final String value;
+  final String selectedValue;
+  final Function(String) onSelected;
+
+  const _MealTypeChip({
+    required this.label,
+    required this.icon,
+    required this.value,
+    required this.selectedValue,
+    required this.onSelected,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final isSelected = value == selectedValue;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    return InkWell(
+      onTap: () => onSelected(value),
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+        decoration: BoxDecoration(
+          color: isSelected
+              ? Theme.of(context).primaryColor.withOpacity(0.2)
+              : isDark
+                  ? Colors.grey[800]
+                  : Colors.grey[200],
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: isSelected
+                ? Theme.of(context).primaryColor
+                : Colors.transparent,
+            width: 2,
+          ),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              icon,
+              color: isSelected
+                  ? Theme.of(context).primaryColor
+                  : isDark
+                      ? Colors.grey[400]
+                      : Colors.grey[600],
+              size: 24,
+            ),
+            const SizedBox(height: 4),
+            Text(
+              label,
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                color: isSelected
+                    ? Theme.of(context).primaryColor
+                    : isDark
+                        ? Colors.grey[400]
+                        : Colors.grey[700],
+              ),
+            ),
           ],
         ),
       ),
